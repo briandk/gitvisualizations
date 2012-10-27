@@ -1,15 +1,18 @@
 from git import *
 
-def outputCommits(repositoryName = None):
+def outputCommits(
+  repositoryPath = '/Users/briandanielak/Dropbox/dev/testrepo',
+  filename = 'test.txt'
+  ):
   '''Creates an HTML timeline of all a file's revisions.
 
   '''
-  repo = Repo(repositoryName)
-  assert repo.bare == False
+  repo = Repo(repositoryPath)
+  print repo.blame('master', filename)
 
-  print repo
 
-outputCommits('/Users/briandanielak/Dropbox/dev/roxygen')
+if __name__ == '__main__':
+  outputCommits()
 
 
 
