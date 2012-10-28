@@ -18,6 +18,20 @@ def checkArguments(inputFile, outputFile):
   # if inputFile is None or !(git repo), throw exception
   # if outputFile is None, throw a helpful exception
 
+def extractRepoAndFilename(inputFile):
+  '''
+    OutputCommits should take just a single inputFile
+    argument and handle it gracefully
+
+    repo = Repo(inputFile) automatically associates the
+    nearest top-level Git directory.
+
+    All that's needed is splitting the input file
+    against the repo directory:
+
+    repo.git_dir.split('/.git')[0]
+  '''
+
 
 def getHashesOfFileCommits(repo, file):
   return repo.git.log(file, format='%H').splitlines()
