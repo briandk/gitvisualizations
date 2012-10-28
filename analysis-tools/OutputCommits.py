@@ -15,8 +15,10 @@ def outputCommits(
   return None
 
 def checkArguments(inputFile, outputFile):
-  # if inputFile is None or !(git repo), throw exception
-  # if outputFile is None, throw a helpful exception
+  '''
+  if inputFile is None or !(git repo), throw exception
+  if outputFile is None, throw a helpful exception
+  '''
 
 def getHashesOfFileCommits(repo, file):
   return repo.git.log(file, format='%H').splitlines()
