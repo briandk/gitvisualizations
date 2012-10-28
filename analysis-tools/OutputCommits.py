@@ -8,8 +8,7 @@ def outputCommits(
 
   '''
   def getHashesOfFileCommits(file):
-    x = repo.git.log('--oneline', file).splitlines()
-    return zip(*[elem.split(' ', 1) for elem in x])[0]
+    return repo.git.log(file, format='%H').splitlines()
 
   repo = Repo(repositoryPath)
   hashes = getHashesOfFileCommits(filename)
