@@ -7,14 +7,15 @@ def outputCommits(
   '''Creates an HTML timeline of all a file's revisions.
 
   '''
-  def getHashesOfFileCommits(file):
-    return repo.git.log(file, format='%H').splitlines()
 
   repo = Repo(repositoryPath)
-  hashes = getHashesOfFileCommits(filename)
+  hashes = getHashesOfFileCommits(repo, filename)
   blame = repo.git.blame('-s', filename)
   print hashes
+  return None
 
+def getHashesOfFileCommits(repo, file):
+  return repo.git.log(file, format='%H').splitlines()
 
 
 if __name__ == '__main__':
