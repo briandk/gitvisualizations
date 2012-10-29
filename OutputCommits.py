@@ -34,6 +34,19 @@ def writeBlames(blames):
 
   return None
 
+def openOutputFile(pathname):
+    pathname = os.path.expanduser(pathname)
+    if os.path.isfile(pathname):
+        try:
+            f = open(pathname, 'w')
+            f.write('')
+            f.close()
+        except IOError:
+            pass
+
+    f = open(pathname, 'a')
+    return f
+
 
 if __name__ == '__main__':
   outputCommits()
