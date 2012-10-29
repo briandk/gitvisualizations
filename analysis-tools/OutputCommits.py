@@ -4,14 +4,15 @@ def outputCommits(
   repositoryPath = '/Users/briandanielak/Dropbox/dev/roxygen',
   filename = 'DESCRIPTION'
   ):
-  '''Creates an HTML timeline of all a file's revisions.
-
+  '''Creates an HTML timeline
+  of all a file's revisions.
   '''
 
   repo = Repo(repositoryPath)
-  hashes = getHashesOfFileCommits(repo, filename)
-  blame = repo.git.blame('-s', filename)
-  print hashes
+  revisions = getHashesOfFileCommits(repo, filename)
+  blames = getBlames(repo, revisions)
+  writeBlames(blames)
+
   return None
 
 def checkArguments(inputFile, outputFile):
@@ -22,6 +23,16 @@ def checkArguments(inputFile, outputFile):
 
 def getHashesOfFileCommits(repo, file):
   return repo.git.log(file, format='%H').splitlines()
+
+def getBlames(repo, revisions):
+  return (
+    [repo.git.blame(revision, '--root', '--show-number', '-s', 'DESCRIPTION').splitlines() for revision in revisions]
+  )
+
+def writeBlames(blames):
+  print '\n'.join(blames[0])
+
+  return None
 
 
 if __name__ == '__main__':
