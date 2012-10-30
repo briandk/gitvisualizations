@@ -29,7 +29,7 @@ class GitTimeline(dict):
 
     def writeTimeline(self):
         self['output'].write('<html><head>\n%s\n</head><body><table><tr>\n' % self['css'])
-        self['output'].write('\n'.join(self['blames'][0]))
+        self['output'].write('<td>\n%s\n</td>' % '\n'.join(self['blames'][0]))
 
         return None
 
