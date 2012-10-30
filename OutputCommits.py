@@ -28,7 +28,8 @@ class GitTimeline(dict):
         return self
 
     def writeTimeline(self):
-        self['output'].write('<html><head>\n%s\n</head><body><table><tr>' % t['css'])
+        self['output'].write('<html><head>\n%s\n</head><body><table><tr>\n' % self['css'])
+        self['output'].write('\n'.join(self['blames'][0]))
 
         return None
 
@@ -47,6 +48,7 @@ def outputCommits(
 
     t = GitTimeline()
     t = t.openOutputFile()
+    t.writeTimeline()
     t.closeFiles()
     # revisions = getHashesOfFileCommits(repo, filename)
     # blames = getBlames(repo, revisions)

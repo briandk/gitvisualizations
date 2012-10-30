@@ -1,21 +1,23 @@
-a {
-  font-size: 20pt;
-}
+<style>
+  a {
+    font-size: 20pt;
+  }
 
-td {
-  vertical-align: top;
-}
+  td {
+    vertical-align: top;
+  }
 
-.changed {
-  width: 100%;
-  color: black;
-  background: #00cc00;
-}
+  .changed {
+    width: 100%;
+    color: black;
+    background: #00cc00;
+  }
 
-.compileroutput {
-  background: #cccccc;
-  border: 1px ridge #999999;
-  white-space: pre-wrap;
-  font-family: monospace;
-  display: block;
-}
+  .compileroutput {
+    background: #cccccc;
+    border: 1px ridge #999999;
+    white-space: pre-wrap;
+    font-family: monospace;
+    display: block;
+  }
+</style>
