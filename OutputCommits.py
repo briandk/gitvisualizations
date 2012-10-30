@@ -1,4 +1,13 @@
+import os
+import sys
+import pdb
+
 from git import *
+
+class GitTimeline(dict):
+    def __init__(self):
+        dict.__init__(self)
+        self['repo'] = Repo('/Users/briandanielak/Dropbox/dev/roxygen') # replace with sys.argv[1]
 
 def outputCommits(
   repositoryPath = '/Users/briandanielak/Dropbox/dev/roxygen',
@@ -8,10 +17,12 @@ def outputCommits(
   of all a file's revisions.
   '''
 
-  repo = Repo(repositoryPath)
-  revisions = getHashesOfFileCommits(repo, filename)
-  blames = getBlames(repo, revisions)
-  writeBlames(blames)
+  t = GitTimeline()
+  print t['repo']
+  # revisions = getHashesOfFileCommits(repo, filename)
+  # blames = getBlames(repo, revisions)
+  # pdb.set_trace()
+  # writeTimeline(revisions, blames)
 
   return None
 
@@ -50,6 +61,15 @@ def openOutputFile(pathname):
 
 if __name__ == '__main__':
   outputCommits()
+
+def writeTimeline(revisions, blames, outputFile='~/gitdatacollection/aaa.html'):
+  css = open(os.path.normpath('%s/../TimelineStyle.css' % sys.argv[0]), 'r')
+  output =  openOutputFile(outputFile)
+
+  print css
+  return None
+
+
 
 
 
