@@ -7,9 +7,11 @@ from git import *
 class GitTimeline(dict):
     def __init__(self):
         dict.__init__(self)
-        file = '/Users/briandanielak/Dropbox/dev/roxygen' # replace with sys.argv[1]
+        file = '/Users/briandanielak/Dropbox/dev/roxygen/DESCRIPTION' # replace with sys.argv[1]
         self['repo'] = Repo(file)
         self['fileRevisions'] = self['repo'].git.log(file, format='%H').splitlines()
+        self['blames'] = [self['repo'].git.blame(revision, '--root', '--show-number', '-s', file).splitlines()
+                          for revision in self['fileRevisions']]
 
 def outputCommits(
   repositoryPath = '/Users/briandanielak/Dropbox/dev/roxygen',
