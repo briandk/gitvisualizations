@@ -6,15 +6,31 @@ from git import *
 
 class GitTimeline(dict):
     def __init__(self):
-    dict.__init__(self)
-    file = '/Users/briandanielak/Dropbox/dev/roxygen/DESCRIPTION' # replace with sys.argv[1]
-    self['repo'] = Repo(file)
-    self['fileRevisions'] = self['repo'].git.log(file, format='%H').splitlines()
-    self['blames'] = [self['repo'].git.blame(revision, '--root', '--show-number', '-s', file).splitlines()
-                        for revision in self['fileRevisions']]
+        file = '/Users/briandanielak/Dropbox/dev/roxygen/DESCRIPTION' # replace with sys.argv[1]
+        self['repo'] = Repo(file)
+        self['fileRevisions'] = self['repo'].git.log(file, format='%H').splitlines()
+        self['blames'] = [self['repo'].git.blame(revision, '--root', '--show-number', '-s', file).splitlines()
+                            for revision in self['fileRevisions']]
+        self['css'] = open(os.path.normpath('%s/../TimelineStyle.css' % sys.argv[0]), 'r')
+        self['output'] = ''
 
-    self['css'] = open(os.path.normpath('%s/../TimelineStyle.css' % sys.argv[0]), 'r')
-    self['output'] =
+    def openOutputFile(self, pathname):
+        pathname = os.path.expanduser(pathname)
+        if os.path.isfile(pathname):
+            try:
+                f = open(pathname, 'w')
+                f.write('')
+                f.close()
+            except IOError:
+                pass
+
+        f = open(pathname, 'a')
+        return f
+
+    def closeFiles(self):
+        [v.close() for v in self.values() if type(v) is file]
+        return None
+
 
 def outputCommits(
     repositoryPath = '/Users/briandanielak/Dropbox/dev/roxygen',
@@ -26,6 +42,7 @@ def outputCommits(
 
     t = GitTimeline()
     print t['css'].read()
+    t.closeFiles()
     # revisions = getHashesOfFileCommits(repo, filename)
     # blames = getBlames(repo, revisions)
     # pdb.set_trace()
@@ -43,20 +60,6 @@ def writeBlames(blames):
     print '\n'.join(blames[0])
 
     return None
-
-def openOutputFile(pathname):
-    pathname = os.path.expanduser(pathname)
-    if os.path.isfile(pathname):
-        try:
-            f = open(pathname, 'w')
-            f.write('')
-            f.close()
-        except IOError:
-            pass
-
-    f = open(pathname, 'a')
-    return f
-
 
 if __name__ == '__main__':
     outputCommits()
