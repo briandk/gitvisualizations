@@ -6,11 +6,9 @@ from git import *
 
 class GitTimeline(dict):
     def __init__(self):
-        file = '/Users/briandanielak/Dropbox/dev/roxygen/DESCRIPTION' # replace with sys.argv[1]
+        file = '/Users/briandanielak/Desktop/testrepo/test.txt' # replace with sys.argv[1]
         self['repo'] = Repo(file)
-        self['fileRevisions'] = self['repo'].git.log(file, format='%H').splitlines()
-        self['blames'] = [self['repo'].git.blame(revision, '--root', '--show-number', '-s', file).splitlines()
-                            for revision in self['fileRevisions']]
+        self['fileRevisions'] = self['repo'].git.log(file, format='%h').splitlines()
         self['css'] = open(os.path.normpath('%s/../TimelineStyle.css' % sys.argv[0]), 'r').read()
         self['output'] = ''
 
@@ -28,9 +26,17 @@ class GitTimeline(dict):
         return self
 
     def writeTimeline(self):
+        self['fileRevisions'].reverse()
         self['output'].write('<html><head>\n%s\n</head><body><table><tr>\n' % self['css'])
-        self['output'].write('<td>\n%s\n</td>' % '\n'.join(self['blames'][0]))
+        [self.writeBlame(revision) for revision in self['fileRevisions']]
 
+        return None
+
+    def writeBlame(self, revision, file='/Users/briandanielak/Desktop/testrepo/test.txt'):
+        blame = self['repo'].git.blame(revision, '--root', '--show-number', '-s', file).splitlines()
+        blame = [line.startswith(revision) and '<span class="changed">%s</span>' % line or line
+                    for line in blame]
+        self['output'].write('<td><pre>\n%s\n</pre></td>' % '\n'.join(blame))
         return None
 
     def closeFiles(self):
@@ -54,11 +60,6 @@ def outputCommits(
     # blames = getBlames(repo, revisions)
     # pdb.set_trace()
     # writeTimeline(revisions, blames)
-
-    return None
-
-def writeBlames(blames):
-    print '\n'.join(blames[0])
 
     return None
 
