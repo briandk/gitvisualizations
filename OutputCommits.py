@@ -7,7 +7,9 @@ from git import *
 class GitTimeline(dict):
     def __init__(self):
         dict.__init__(self)
-        self['repo'] = Repo('/Users/briandanielak/Dropbox/dev/roxygen') # replace with sys.argv[1]
+        file = '/Users/briandanielak/Dropbox/dev/roxygen' # replace with sys.argv[1]
+        self['repo'] = Repo(file)
+        self['fileRevisions'] = self['repo'].git.log(file, format='%H').splitlines()
 
 def outputCommits(
   repositoryPath = '/Users/briandanielak/Dropbox/dev/roxygen',
@@ -18,7 +20,7 @@ def outputCommits(
   '''
 
   t = GitTimeline()
-  print t['repo']
+  print t.keys()
   # revisions = getHashesOfFileCommits(repo, filename)
   # blames = getBlames(repo, revisions)
   # pdb.set_trace()
@@ -31,9 +33,6 @@ def checkArguments(inputFile, outputFile):
   if inputFile is None or !(git repo), throw exception
   if outputFile is None, throw a helpful exception
   '''
-
-def getHashesOfFileCommits(repo, file):
-  return repo.git.log(file, format='%H').splitlines()
 
 def getBlames(repo, revisions):
   return (
