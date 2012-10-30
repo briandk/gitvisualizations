@@ -1,6 +1,6 @@
 import os
 import sys
-import pdb
+import time
 
 from git import *
 
@@ -36,7 +36,9 @@ class GitTimeline(dict):
         blame = self['repo'].git.blame(revision, '--root', '--show-number', '-s', file).splitlines()
         blame = [line.startswith(revision) and '<span class="changed">%s</span>' % line or line
                     for line in blame]
-        self['output'].write('<td><pre>\n%s\n</pre></td>' % '\n'.join(blame))
+        timestamp = time.strftime("%a, %d %b %Y %H:%M:%S", time.gmtime(self['repo'].commit(revision).committed_date))
+        self['output'].write('<td><a class=timestamp, name=%s>%s</a><br />' % (revision, timestamp))
+        self['output'].write('<pre>%s</pre></td>' % '\n'.join(blame))
         return None
 
     def closeFiles(self):
@@ -56,10 +58,6 @@ def outputCommits(
     t = t.openOutputFile()
     t.writeTimeline()
     t.closeFiles()
-    # revisions = getHashesOfFileCommits(repo, filename)
-    # blames = getBlames(repo, revisions)
-    # pdb.set_trace()
-    # writeTimeline(revisions, blames)
 
     return None
 
