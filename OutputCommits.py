@@ -11,10 +11,10 @@ class GitTimeline(dict):
         self['fileRevisions'] = self['repo'].git.log(file, format='%H').splitlines()
         self['blames'] = [self['repo'].git.blame(revision, '--root', '--show-number', '-s', file).splitlines()
                             for revision in self['fileRevisions']]
-        self['css'] = open(os.path.normpath('%s/../TimelineStyle.css' % sys.argv[0]), 'r')
+        self['css'] = open(os.path.normpath('%s/../TimelineStyle.css' % sys.argv[0]), 'r').read()
         self['output'] = ''
 
-    def openOutputFile(self, pathname):
+    def openOutputFile(self, pathname='~/gitdatacollection/foo.html'):
         pathname = os.path.expanduser(pathname)
         if os.path.isfile(pathname):
             try:
@@ -24,8 +24,8 @@ class GitTimeline(dict):
             except IOError:
                 pass
 
-        f = open(pathname, 'a')
-        return f
+        self['output'] = open(pathname, 'a')
+        return self
 
     def closeFiles(self):
         [v.close() for v in self.values() if type(v) is file]
@@ -41,7 +41,9 @@ def outputCommits(
     '''
 
     t = GitTimeline()
-    print t['css'].read()
+    t = t.openOutputFile()
+    t['output'].write(t['css'])
+    print t['css']
     t.closeFiles()
     # revisions = getHashesOfFileCommits(repo, filename)
     # blames = getBlames(repo, revisions)
