@@ -7,9 +7,10 @@ from git import *
 class GitTimeline(object):
     def __init__(self):
         file = '/Users/briandanielak/Desktop/testrepo/test.txt' # replace with sys.argv[1]
+        self.args = sys.argv
         self.repo = Repo(file)
         self.fileRevisions = self.repo.git.log(file, format='%h').splitlines()
-        self.css = open(os.path.normpath('%s/../TimelineStyle.css' % sys.argv[0]), 'r').read()
+        self.css = open(self.sanitizeFilepath('%s/../TimelineStyle.css' % sys.argv[0]), 'r').read()
         self.files = dict()
 
     @property
@@ -52,6 +53,11 @@ class GitTimeline(object):
     def closeFiles(self):
         [v.close() for v in self.files.values() if type(v) is file]
         return None
+
+    def sanitizeFilepath(self, filepath):
+        p = os.path.expanduser(filepath)
+        p = os.path.normpath(p)
+        return p
 
 
 def outputCommits():
