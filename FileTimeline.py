@@ -7,11 +7,12 @@ from git import *
 class GitTimeline(object):
     def __init__(self):
         file = '/Users/briandanielak/Desktop/testrepo/test.txt' # replace with sys.argv[1]
-        self.args = sys.argv
-        self.repo = Repo(file)
-        self.fileRevisions = self.repo.git.log(file, format='%h').splitlines()
-        self.css = open(self.sanitizeFilepath('%s/../TimelineStyle.css' % sys.argv[0]), 'r').read()
         self.files = dict()
+        self.args = sys.argv
+        self.input = self.getInputPathFromCommandline()
+        self.repo = Repo(self.input)
+        self.fileRevisions = self.repo.git.log(self.input, format='%h').splitlines()
+        self.css = open(self.sanitizeFilepath('%s/../TimelineStyle.css' % sys.argv[0]), 'r').read()
 
     @property
     def input(self):
@@ -20,6 +21,16 @@ class GitTimeline(object):
     @input.setter
     def input(self, value):
         self.files['input'] = self.sanitizeFilepath(value)
+
+    def getInputPathFromCommandline(self):
+        # path = None
+        try:
+            path = self.args[1]
+        except IndexError:
+            print "\nSorry, it looks like you didn't specify an input file."
+            print "proper usage for this script is 'python inputFile [outputFile]'\n"
+        return path
+
 
     def openOutputFile(self, pathname='~/gitdatacollection/foo.html'):
         pathname = os.path.expanduser(pathname)
@@ -41,8 +52,8 @@ class GitTimeline(object):
 
         return None
 
-    def writeBlame(self, revision, file='/Users/briandanielak/Desktop/testrepo/test.txt'):
-        blame = self.repo.git.blame(revision, '--root', '--show-number', '-s', file).splitlines()
+    def writeBlame(self, revision):
+        blame = self.repo.git.blame(revision, '--root', '--show-number', '--show-name', '-s', self.input).splitlines()
         blame = [line.startswith(revision) and '<span class="changed">%s</span>' % line or line
                     for line in blame]
         timestamp = time.strftime("%a, %d %b %Y %H:%M:%S", time.gmtime(self.repo.commit(revision).committed_date))
