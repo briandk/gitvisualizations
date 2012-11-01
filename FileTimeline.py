@@ -19,7 +19,7 @@ class GitTimeline(object):
 
     @input.setter
     def input(self, value):
-        self.files['input'] = value
+        self.files['input'] = self.sanitizeFilepath(value)
 
     def openOutputFile(self, pathname='~/gitdatacollection/foo.html'):
         pathname = os.path.expanduser(pathname)
