@@ -66,9 +66,11 @@ class GitTimeline(object):
         return None
 
     def sanitizeFilepath(self, filepath):
-        p = os.path.expanduser(filepath)
-        p = os.path.normpath(p)
-        return p
+        filepath = os.path.expanduser(filepath)
+        if os.path.isabs(filepath) == False:
+            filepath = os.path.join(os.getcwd(), filepath)
+        filepath = os.path.normpath(filepath)
+        return filepath
 
 
 def outputCommits():
