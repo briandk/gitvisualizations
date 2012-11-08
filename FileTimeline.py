@@ -6,7 +6,6 @@ from git import *
 
 class GitTimeline(object):
     def __init__(self):
-        file = '/Users/briandanielak/Desktop/testrepo/test.txt' # replace with sys.argv[1]
         self.files = dict()
         self.args = sys.argv
         self.input = self.getInputPathFromCommandline()
@@ -22,8 +21,15 @@ class GitTimeline(object):
     def input(self, value):
         self.files['input'] = self.sanitizeFilepath(value)
 
+    @property
+    def output(self):
+        return self.files['output']
+
+    @output.setter
+    def output(self, value):
+        self.files['output'] = value
+
     def getInputPathFromCommandline(self):
-        # path = None
         try:
             path = self.args[1]
         except IndexError:
@@ -32,18 +38,27 @@ class GitTimeline(object):
         return path
 
 
-    def openOutputFile(self, pathname='~/gitdatacollection/foo.html'):
-        pathname = os.path.expanduser(pathname)
-        if os.path.isfile(pathname):
-            try:
-                f = open(pathname, 'w')
-                f.write('')
-                f.close()
-            except IOError:
-                pass
-
-        self.output = open(pathname, 'a')
+    def getOutputFile(self):
+        if (len(self.args) >= 3):
+            self.output = self.safelyOpenOutputFile(self.args[2])
+        else:
+            path = os.path.split(self.args[1])[1]
+            path = self.sanitizeFilepath('~/gitvisualizations/%s.html' % path)
+            self.output = self.safelyOpenOutputFile(pathname=path)
         return self
+
+    def safelyOpenOutputFile(self, pathname):
+        pathname = self.sanitizeFilepath(pathname)
+        f = None
+        try:
+            f = open(pathname, 'w')
+            f.write('')
+            f.close()
+        except IOError:
+            pass
+        finally:
+            f = open(pathname, 'a')
+        return f
 
     def writeTimeline(self):
         self.fileRevisions.reverse()
@@ -73,13 +88,15 @@ class GitTimeline(object):
         return filepath
 
 
+
+
 def outputCommits():
     '''Creates an HTML timeline
     of all a file's revisions.
     '''
 
     t = GitTimeline()
-    t = t.openOutputFile()
+    t = t.getOutputFile()
     t.writeTimeline()
     t.closeFiles()
 
