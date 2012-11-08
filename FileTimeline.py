@@ -1,7 +1,9 @@
 import os
 import sys
 import time
-
+from pygments import highlight
+from pygments.lexers import get_lexer_by_name
+from pygments.formatters import HtmlFormatter
 from git import *
 
 class GitTimeline(object):
@@ -68,13 +70,20 @@ class GitTimeline(object):
         return None
 
     def writeBlame(self, revision):
-        blame = self.repo.git.blame(revision, '--root', '--show-number', '--show-name', '-s', self.input).splitlines()
-        blame = [line.startswith(revision) and '<span class="changed">%s</span>' % line or line
-                    for line in blame]
+        blame = self.repo.git.blame(revision, '--root', '--show-number', '--show-name', '-s', self.input)
+        formattedCode = self.extractAndFormatCodeFromBlame(blame)
         timestamp = time.strftime("%a, %d %b %Y %H:%M:%S", time.gmtime(self.repo.commit(revision).committed_date))
         self.output.write('<td><a class=timestamp, name=%s>%s</a><br />' % (revision, timestamp))
-        self.output.write('<pre>%s</pre></td>' % '\n'.join(blame))
+        self.output.write('<pre>%s</pre></td>' % formattedCode)
         return None
+
+    def extractAndFormatCodeFromBlame(self, blame):
+        blame = blame.splitlines()
+        code = [line.split(') ', 1)[1] for line in blame]
+        code = '%s\n' % '\n'.join(code)
+        lexer = get_lexer_by_name("python", stripall=True)
+        formatter = HtmlFormatter(linenos=True, cssclass="source", style="monokai")
+        return highlight(code, lexer, formatter)
 
     def closeFiles(self):
         [v.close() for v in self.files.values() if type(v) is file]
