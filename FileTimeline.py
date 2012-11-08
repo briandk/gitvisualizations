@@ -87,6 +87,26 @@ class GitTimeline(object):
         filepath = os.path.normpath(filepath)
         return filepath
 
+"""To handle the blame:
+
+- Run the blame command
+- Capture the result as a multi-line string
+- split the string as line =  blame.splitlines()
+- split the line as line = line.split(None, 4)
+- Take the fourth element in each line list and concatenate them
+    using '%s\n' % blame[24].split(None, 4)[4]
+
+There's an issue of parsing, reconstructing, and splitting.
+
+- The raw blame has to be split
+- The split blame lines are parsed
+- The extracted code is rejoined
+- The rejoined code is pygmentized
+- The pygmentized code is resplit
+- The split pygmentized code is marked up with "changed"
+- The split lines are reconstructed and written to file
+"""
+
 
 
 
