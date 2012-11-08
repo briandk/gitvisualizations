@@ -2,7 +2,7 @@ import os
 import sys
 import time
 from pygments import highlight
-from pygments.lexers import get_lexer_by_name
+from pygments.lexers import get_lexer_for_filename
 from pygments.formatters import HtmlFormatter
 from git import *
 
@@ -81,7 +81,7 @@ class GitTimeline(object):
         blame = blame.splitlines()
         code = [line.split(') ', 1)[1] for line in blame]
         code = '%s\n' % '\n'.join(code)
-        lexer = get_lexer_by_name("python", stripall=True)
+        lexer = get_lexer_for_filename(self.input)
         formatter = HtmlFormatter(linenos=True, cssclass="source", style="monokai")
         return highlight(code, lexer, formatter)
 
