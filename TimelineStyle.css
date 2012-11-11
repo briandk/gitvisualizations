@@ -21,9 +21,16 @@
     display: block;
   }
 
+  pre {
+    line-height: 1.4;
+    font-family: Consolas, Courier;
+    font-size: 2
+  }
+
+  /*--- CSS from the pygments "monokai" output style---*/
+
   td.linenos { background-color: #534A4A; padding-right: 10px; }
   span.lineno { background-color: #f0f0f0; padding: 0 5px 0 5px; }
-  pre { line-height: 125%; }
   body .hll { background-color: #49483e }
   body  { background: #272822; color: #f8f8f2 }
   body .c { color: #75715e } /* Comment */
