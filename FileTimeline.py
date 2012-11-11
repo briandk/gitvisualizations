@@ -51,15 +51,7 @@ class GitTimeline(object):
 
     def safelyOpenOutputFile(self, pathname):
         pathname = self.sanitizeFilepath(pathname)
-        f = None
-        try:
-            f = open(pathname, 'w')
-            f.write('')
-            f.close()
-        except IOError:
-            pass
-        finally:
-            f = open(pathname, 'a')
+        f = open(pathname, 'w')
         return f
 
     def writeTimeline(self):
