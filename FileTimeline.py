@@ -1,3 +1,4 @@
+import codecs
 import os
 import sys
 import time
@@ -51,7 +52,7 @@ class GitTimeline(object):
 
     def safelyOpenOutputFile(self, pathname):
         pathname = self.sanitizeFilepath(pathname)
-        f = open(pathname, 'w')
+        f = codecs.open(pathname, 'w', 'utf_8')
         return f
 
     def writeTimeline(self):
