@@ -1,6 +1,9 @@
 import os
 import sys
 import time
+import argparse
+
+# User-installed dependencies
 from pygments import highlight
 from pygments.lexers import get_lexer_for_filename
 from pygments.formatters import HtmlFormatter
@@ -9,7 +12,7 @@ from git import *
 class GitTimeline(object):
     def __init__(self):
         self.files = dict()
-        self.args = sys.argv
+        self.args = self.parseCommandLineArguments()
         self.input = self.getInputPathFromCommandline()
         self.repo = Repo(self.input)
         self.fileRevisions = self.repo.git.log(self.input, format='%h').splitlines()
@@ -31,9 +34,16 @@ class GitTimeline(object):
     def output(self, value):
         self.files['output'] = value
 
+    def parseCommandLineArguments(self):
+        parser = argparse.ArgumentParser()
+        parser.add_argument("input", help="The file you'd like to see a timeline of")
+        parser.add_argument("--output", "-o", help="An optional name for the output file")
+        parser.add_argument("--debug", "-d", action="store_true", help="output CSS and JS as separate files")
+        return parser.parse_args()
+
     def getInputPathFromCommandline(self):
         try:
-            path = self.args[1]
+            path = self.args.input
         except IndexError:
             print "\nSorry, it looks like you didn't specify an input file."
             print "proper usage for this script is 'python inputFile [outputFile]'\n"
@@ -41,11 +51,11 @@ class GitTimeline(object):
 
 
     def getOutputFile(self):
-        if (len(self.args) >= 3):
-            self.output = self.safelyOpenOutputFile(self.args[2])
+        if self.args.output:
+            self.output = self.safelyOpenOutputFile(self.args.output)
         else:
-            path = os.path.split(self.args[1])[1]
-            path = self.sanitizeFilepath('~/gitvisualizations/%s.html' % path)
+            (head, tail) = os.path.split(self.args.input)
+            path = self.sanitizeFilepath('~/gitvisualizations/%s.html' % tail)
             self.output = self.safelyOpenOutputFile(pathname=path)
         return self
 
@@ -120,7 +130,6 @@ def outputCommits():
     t = t.getOutputFile()
     t.writeTimeline()
     t.closeFiles()
-
     return None
 
 if __name__ == '__main__':
