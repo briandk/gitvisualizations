@@ -8,3 +8,6 @@
 Icon?
 ehthumbs.db
 Thumbs.db
+
+# Python Bytecode/Outputs #
+*.py[cod]
