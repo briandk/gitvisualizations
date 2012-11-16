@@ -16,7 +16,7 @@ class GitTimeline(object):
         self.args = self.parseCommandLineArguments()
         self.input = self.getInputPathFromCommandline()
         self.repo = Repo(self.input)
-        self.fileRevisions = self.repo.git.log(self.input, format='%h').splitlines()
+        self.fileRevisions = self.repo.git.log(self.input, format='%H').splitlines()
         self.css = open(self.sanitizeFilepath('%s/../TimelineStyle.css' % sys.argv[0]), 'r').read()
 
     @property
@@ -74,19 +74,33 @@ class GitTimeline(object):
 
     def writeBlame(self, revision):
         blame = self.repo.git.blame(revision, '--root', '--show-number', '--show-name', '-s', self.input)
-        formattedCode = self.extractAndFormatCodeFromBlame(blame)
+        formattedCode = self.extractAndFormatCodeFromBlame(blame, revision)
         timestamp = time.strftime("%a, %d %b %Y %H:%M:%S", time.gmtime(self.repo.commit(revision).committed_date))
         self.output.write('<td><a class=timestamp, name=%s>%s</a><br />' % (revision, timestamp))
         self.output.write('<pre>%s</pre></td>' % formattedCode)
         return None
 
-    def extractAndFormatCodeFromBlame(self, blame):
-        blame = blame.splitlines()
-        code = [line.split(') ', 1)[1] for line in blame]
+    def extractAndFormatCodeFromBlame(self, blame, revision):
+        code = [self.parseBlameLine(line, revision)['code']
+                    for line in blame.splitlines()]
         code = '%s\n' % '\n'.join(code)
         lexer = get_lexer_for_filename(self.input)
         formatter = HtmlFormatter(linenos=True, cssclass="source", style="monokai")
         return highlight(code, lexer, formatter)
+
+    def parseBlameLine(self, line, revision):
+        (blameInfo, code) = line.split(')', 1)
+        (sha, fileName, oldLineNumber, newLineNumber) = blameInfo.split()
+        isChanged = "unchanged"
+        if (revision.startswith(sha)):
+            isChanged = "changed"
+        output = {'sha': sha,
+                  'fileName': fileName,
+                  'oldLineNumber': oldLineNumber,
+                  'newLineNumber': newLineNumber,
+                  'isChanged': isChanged,
+                  'code': code}
+        return output
 
     def closeFiles(self):
         [v.close() for v in self.files.values() if type(v) is file]
