@@ -12,28 +12,12 @@ from git import *
 
 class GitTimeline(object):
     def __init__(self):
-        self.files = dict()
         self.args = self.parseCommandLineArguments()
         self.input = self.args.input
+        self.output = None
         self.repo = Repo(self.input)
         self.fileRevisions = self.repo.git.log(self.input, format='%H').splitlines()
         self.css = open(self.sanitizeFilepath('%s/../TimelineStyle.css' % sys.argv[0]), 'r').read()
-
-    @property
-    def input(self):
-        return self.files['input']
-
-    @input.setter
-    def input(self, value):
-        self.files['input'] = self.sanitizeFilepath(value)
-
-    @property
-    def output(self):
-        return self.files['output']
-
-    @output.setter
-    def output(self, value):
-        self.files['output'] = value
 
     def parseCommandLineArguments(self):
         parser = argparse.ArgumentParser()
@@ -43,12 +27,12 @@ class GitTimeline(object):
         return parser.parse_args()
 
     def getOutputFile(self):
-        if self.args.output:
-            self.output = self.safelyOpenOutputFile(self.args.output)
-        else:
+        if self.args.output is None:
             (head, tail) = os.path.split(self.args.input)
             path = self.sanitizeFilepath('~/gitvisualizations/%s.html' % tail)
             self.output = self.safelyOpenOutputFile(pathname=path)
+        else:
+            self.output = self.safelyOpenOutputFile(self.args.output)
         return self
 
     def safelyOpenOutputFile(self, pathname):
@@ -93,10 +77,6 @@ class GitTimeline(object):
                   'code': code}
         return output
 
-    def closeFiles(self):
-        [v.close() for v in self.files.values() if type(v) is file]
-        return None
-
     def sanitizeFilepath(self, filepath):
         filepath = os.path.expanduser(filepath)
         if os.path.isabs(filepath) == False:
@@ -135,7 +115,6 @@ def outputCommits():
     t = GitTimeline()
     t = t.getOutputFile()
     t.writeTimeline()
-    t.closeFiles()
     return None
 
 if __name__ == '__main__':
