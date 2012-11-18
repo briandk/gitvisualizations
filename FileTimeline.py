@@ -14,7 +14,7 @@ class GitTimeline(object):
     def __init__(self):
         self.files = dict()
         self.args = self.parseCommandLineArguments()
-        self.input = self.getInputPathFromCommandline()
+        self.input = self.args.input
         self.repo = Repo(self.input)
         self.fileRevisions = self.repo.git.log(self.input, format='%H').splitlines()
         self.css = open(self.sanitizeFilepath('%s/../TimelineStyle.css' % sys.argv[0]), 'r').read()
@@ -41,15 +41,6 @@ class GitTimeline(object):
         parser.add_argument("--output", "-o", help="An optional name for the output file")
         parser.add_argument("--debug", "-d", action="store_true", help="output CSS and JS as separate files")
         return parser.parse_args()
-
-    def getInputPathFromCommandline(self):
-        try:
-            path = self.args.input
-        except IndexError:
-            print "\nSorry, it looks like you didn't specify an input file."
-            print "proper usage for this script is 'python inputFile [outputFile]'\n"
-        return path
-
 
     def getOutputFile(self):
         if self.args.output:
