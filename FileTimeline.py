@@ -10,13 +10,11 @@ from pygments.lexers import get_lexer_for_filename
 from pygments.formatters import HtmlFormatter
 from git import *
 
-class GitTimeline(object):
+class FileHandler(object):
     def __init__(self):
         self.args = self.parseCommandLineArguments()
-        self.input = self.args.input
-        self.output = None
-        self.repo = Repo(self.input)
-        self.fileRevisions = self.repo.git.log(self.input, format='%H').splitlines()
+        self.input = self.sanitizeFilepath(self.args.input)
+        self.output = self.getOutputFile()
         self.css = open(self.sanitizeFilepath('%s/../TimelineStyle.css' % sys.argv[0]), 'r').read()
 
     def parseCommandLineArguments(self):
@@ -26,19 +24,44 @@ class GitTimeline(object):
         parser.add_argument("--debug", "-d", action="store_true", help="output CSS and JS as separate files")
         return parser.parse_args()
 
+    def sanitizeFilepath(self, filepath):
+        filepath = os.path.expanduser(filepath)
+        if os.path.isabs(filepath) == False:
+            filepath = os.path.join(os.getcwd(), filepath)
+        filepath = os.path.normpath(filepath)
+        return filepath
+
     def getOutputFile(self):
         if self.args.output is None:
             (head, tail) = os.path.split(self.args.input)
             path = self.sanitizeFilepath('~/gitvisualizations/%s.html' % tail)
-            self.output = self.safelyOpenOutputFile(pathname=path)
+            outputFile = self.safelyOpenOutputFile(pathname=path)
         else:
-            self.output = self.safelyOpenOutputFile(self.args.output)
-        return self
+            outputFile = self.safelyOpenOutputFile(self.args.output)
+        return outputFile
 
     def safelyOpenOutputFile(self, pathname):
         pathname = self.sanitizeFilepath(pathname)
         f = codecs.open(pathname, 'w', 'utf_8')
         return f
+
+class GitTimeline(object):
+    @property
+    def input(self):
+        return self.files.input
+
+    @property
+    def output(self):
+        return self.files.output
+
+    @property
+    def css(self):
+        return self.files.css
+
+    def __init__(self):
+        self.files = FileHandler()
+        self.repo = Repo(self.input)
+        self.fileRevisions = self.repo.git.log(self.input, format='%H').splitlines()
 
     def writeTimeline(self):
         self.fileRevisions.reverse()
@@ -77,13 +100,6 @@ class GitTimeline(object):
                   'code': code}
         return output
 
-    def sanitizeFilepath(self, filepath):
-        filepath = os.path.expanduser(filepath)
-        if os.path.isabs(filepath) == False:
-            filepath = os.path.join(os.getcwd(), filepath)
-        filepath = os.path.normpath(filepath)
-        return filepath
-
 """To handle the blame:
 
 - Run the blame command
@@ -113,7 +129,6 @@ def outputCommits():
     '''
 
     t = GitTimeline()
-    t = t.getOutputFile()
     t.writeTimeline()
     return None
 
