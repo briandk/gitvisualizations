@@ -60,22 +60,11 @@ class FileHandler(object):
 
 
 class GitTimeline(object):
-    @property
-    def input(self):
-        return self.files.input
-
-    @property
-    def output(self):
-        return self.files.output
-
-    @property
-    def css(self):
-        return self.files.css
 
     def __init__(self):
         self.files = FileHandler()
-        self.repo = Repo(self.input)
-        self.fileRevisions = self.repo.git.log(self.input, format='%H').splitlines()
+        self.repo = Repo(self.files.input)
+        self.fileRevisions = self.repo.git.log(self.files.input, format='%H').splitlines()
 
     def writeTimeline(self):
         self.fileRevisions.reverse()
@@ -85,7 +74,7 @@ class GitTimeline(object):
         return None
 
     def writeBlame(self, revision, output):
-        blame = self.repo.git.blame(revision, '--root', '--show-number', '--show-name', '-s', self.input)
+        blame = self.repo.git.blame(revision, '--root', '--show-number', '--show-name', '-s', self.files.input)
         formattedCode = self.extractAndFormatCodeFromBlame(blame, revision)
         timestamp = time.strftime("%a, %d %b %Y %H:%M:%S", time.gmtime(self.repo.commit(revision).committed_date))
         output.write('<td><a class=timestamp, name=%s>%s</a><br />' % (revision, timestamp))
@@ -96,7 +85,7 @@ class GitTimeline(object):
         code = [self.parseBlameLine(line, revision)['code']
                     for line in blame.splitlines()]
         code = '%s\n' % '\n'.join(code)
-        lexer = get_lexer_for_filename(self.input)
+        lexer = get_lexer_for_filename(self.files.input)
         formatter = HtmlFormatter(linenos=True, cssclass="source", style="monokai")
         return highlight(code, lexer, formatter)
 
