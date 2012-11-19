@@ -3,6 +3,7 @@ import os
 import sys
 import time
 import argparse
+import shutil
 
 # User-installed dependencies
 from pygments import highlight
@@ -10,81 +11,80 @@ from pygments.lexers import get_lexer_for_filename
 from pygments.formatters import HtmlFormatter
 from git import *
 
-class GitTimeline(object):
+class FileHandler(object):
     def __init__(self):
-        self.files = dict()
         self.args = self.parseCommandLineArguments()
-        self.input = self.getInputPathFromCommandline()
-        self.repo = Repo(self.input)
-        self.fileRevisions = self.repo.git.log(self.input, format='%H').splitlines()
-        self.css = open(self.sanitizeFilepath('%s/../TimelineStyle.css' % sys.argv[0]), 'r').read()
-
-    @property
-    def input(self):
-        return self.files['input']
-
-    @input.setter
-    def input(self, value):
-        self.files['input'] = self.sanitizeFilepath(value)
-
-    @property
-    def output(self):
-        return self.files['output']
-
-    @output.setter
-    def output(self, value):
-        self.files['output'] = value
+        self.input = self.sanitizeFilepath(self.args.input)
+        self.outputDirectory, self.outputFilename = self.getOutput()
+        self.html = '%s.html' % os.path.join(self.outputDirectory, self.outputFilename)
+        self.externalFiles = ['TimelineStyle.css']
+        self.copyExternalFiles()
 
     def parseCommandLineArguments(self):
         parser = argparse.ArgumentParser()
         parser.add_argument("input", help="The file you'd like to see a timeline of")
         parser.add_argument("--output", "-o", help="An optional name for the output file")
-        parser.add_argument("--debug", "-d", action="store_true", help="output CSS and JS as separate files")
         return parser.parse_args()
 
-    def getInputPathFromCommandline(self):
-        try:
-            path = self.args.input
-        except IndexError:
-            print "\nSorry, it looks like you didn't specify an input file."
-            print "proper usage for this script is 'python inputFile [outputFile]'\n"
-        return path
+    def sanitizeFilepath(self, filepath):
+        filepath = os.path.expanduser(filepath)
+        if os.path.isabs(filepath) == False:
+            filepath = os.path.join(os.getcwd(), filepath)
+        filepath = os.path.normpath(filepath)
+        return filepath
 
+    def getHTMLOutputFile(self):
+        path = '%s.html' % os.path.join(self.outputDirectory, self.outputFilename)
+        return codecs.open(path, 'w', 'utf_8')
 
-    def getOutputFile(self):
-        if self.args.output:
-            self.output = self.safelyOpenOutputFile(self.args.output)
+    def getOutput(self):
+        (rootPath, fileExtension) = os.path.splitext(self.sanitizeFilepath(self.args.input))
+        (inputFilePath, filename) = os.path.split(rootPath)
+        if self.args.output is None:
+            outputPath = self.sanitizeFilepath(os.path.join('~/gitvisualizations', filename))
         else:
-            (head, tail) = os.path.split(self.args.input)
-            path = self.sanitizeFilepath('~/gitvisualizations/%s.html' % tail)
-            self.output = self.safelyOpenOutputFile(pathname=path)
-        return self
+            outputPath = self.sanitizeFilepath(self.args.output)
+        self.makeOutputDirectory(outputPath)
+        return (outputPath, filename)
 
-    def safelyOpenOutputFile(self, pathname):
-        pathname = self.sanitizeFilepath(pathname)
-        f = codecs.open(pathname, 'w', 'utf_8')
-        return f
+    def makeOutputDirectory(self, path):
+        if os.path.exists(path) is not True:
+            os.makedirs(path)
+
+    def copyExternalFiles(self):
+        for filename in self.externalFiles:
+            source = os.path.join(os.path.dirname(__file__), filename)
+            destination = os.path.join(self.outputDirectory, filename)
+            shutil.copy(source, destination)
+
+
+class GitTimeline(object):
+
+    def __init__(self):
+        self.files = FileHandler()
+        self.repo = Repo(self.files.input)
+        self.fileRevisions = self.repo.git.log(self.files.input, format='%H').splitlines()
 
     def writeTimeline(self):
         self.fileRevisions.reverse()
-        self.output.write('<html><head>\n%s\n</head><body><table><tr>\n' % self.css)
-        [self.writeBlame(revision) for revision in self.fileRevisions]
-
+        with self.files.getHTMLOutputFile() as output:
+            output.write("<html><head><link rel='stylesheet' href='TimelineStyle.css'></head><body><table><tr>\n")
+            [self.writeBlame(revision, output) for revision in self.fileRevisions]
         return None
 
-    def writeBlame(self, revision):
-        blame = self.repo.git.blame(revision, '--root', '--show-number', '--show-name', '-s', self.input)
+    def writeBlame(self, revision, output):
+        blame = self.repo.git.blame(revision, '--root', '--show-number', '--show-name', '-s', self.files.input)
         formattedCode = self.extractAndFormatCodeFromBlame(blame, revision)
         timestamp = time.strftime("%a, %d %b %Y %H:%M:%S", time.gmtime(self.repo.commit(revision).committed_date))
-        self.output.write('<td><a class=timestamp, name=%s>%s</a><br />' % (revision, timestamp))
-        self.output.write('<pre>%s</pre></td>' % formattedCode)
+        output.write('<td><a class=timestamp, name=%s>%s</a><br />' % (revision, timestamp))
+        output.write('<pre>%s</pre></td>' % formattedCode)
         return None
 
     def extractAndFormatCodeFromBlame(self, blame, revision):
         code = [self.parseBlameLine(line, revision)['code']
                     for line in blame.splitlines()]
         code = '%s\n' % '\n'.join(code)
-        lexer = get_lexer_for_filename(self.input)
+        lexer = get_lexer_for_filename(self.files.input)
         formatter = HtmlFormatter(linenos=True, cssclass="source", style="monokai")
         return highlight(code, lexer, formatter)
 
@@ -101,17 +101,6 @@ class GitTimeline(object):
                   'isChanged': isChanged,
                   'code': code}
         return output
-
-    def closeFiles(self):
-        [v.close() for v in self.files.values() if type(v) is file]
-        return None
-
-    def sanitizeFilepath(self, filepath):
-        filepath = os.path.expanduser(filepath)
-        if os.path.isabs(filepath) == False:
-            filepath = os.path.join(os.getcwd(), filepath)
-        filepath = os.path.normpath(filepath)
-        return filepath
 
 """To handle the blame:
 
@@ -142,9 +131,7 @@ def outputCommits():
     '''
 
     t = GitTimeline()
-    t = t.getOutputFile()
     t.writeTimeline()
-    t.closeFiles()
     return None
 
 if __name__ == '__main__':
