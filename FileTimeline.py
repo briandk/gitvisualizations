@@ -45,7 +45,7 @@ class FileHandler(object):
         else:
             outputPath = self.sanitizeFilepath(self.args.output)
         self.makeOutputDirectory(outputPath)
-        return (os.path.join(outputPath), filename)
+        return (outputPath, filename)
 
     def makeOutputDirectory(self, path):
         if os.path.exists(path) is not True:
