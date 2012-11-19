@@ -24,7 +24,6 @@ class FileHandler(object):
         parser = argparse.ArgumentParser()
         parser.add_argument("input", help="The file you'd like to see a timeline of")
         parser.add_argument("--output", "-o", help="An optional name for the output file")
-        parser.add_argument("--debug", "-d", action="store_true", help="output CSS and JS as separate files")
         return parser.parse_args()
 
     def sanitizeFilepath(self, filepath):
