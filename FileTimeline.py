@@ -14,7 +14,7 @@ class FileHandler(object):
     def __init__(self):
         self.args = self.parseCommandLineArguments()
         self.input = self.sanitizeFilepath(self.args.input)
-        self.output = self.getOutputFile()
+        self.output = self.getOutput()
         self.css = open(self.sanitizeFilepath('%s/../TimelineStyle.css' % sys.argv[0]), 'r').read()
 
     def parseCommandLineArguments(self):
@@ -32,18 +32,23 @@ class FileHandler(object):
         return filepath
 
     def getOutputFile(self):
-        if self.args.output is None:
-            (head, tail) = os.path.split(self.args.input)
-            path = self.sanitizeFilepath('~/gitvisualizations/%s.html' % tail)
-            outputFile = self.safelyOpenOutputFile(pathname=path)
-        else:
-            outputFile = self.safelyOpenOutputFile(self.args.output)
-        return outputFile
+        outputPath = self.makeOutputDirectory()
+        return codecs.open(path, 'w', 'utf_8')
 
-    def safelyOpenOutputFile(self, pathname):
-        pathname = self.sanitizeFilepath(pathname)
-        f = codecs.open(pathname, 'w', 'utf_8')
-        return f
+    def getOutput(self):
+        (rootPath, fileExtension) = os.path.splitext(self.sanitizeFilepath(self.args.input))
+        (inputFilePath, filename) = os.path.split(rootPath)
+        if self.args.output is None:
+            outputPath = self.sanitizeFilepath(os.join('~/gitvisualizations', filename))
+        else:
+            outputPath = self.sanitizeFilepath(self.args.output)
+        self.makeOutputDirectory(outputPath)
+        return os.path.join(outputPath, filename)
+
+    def makeOutputDirectory(self, path):
+        if os.path.exists(path) is not True:
+            os.makedirs(path)
+
 
 class GitTimeline(object):
     @property
@@ -65,17 +70,17 @@ class GitTimeline(object):
 
     def writeTimeline(self):
         self.fileRevisions.reverse()
-        self.output.write('<html><head>\n%s\n</head><body><table><tr>\n' % self.css)
-        [self.writeBlame(revision) for revision in self.fileRevisions]
-
+        with codecs.open('%s.html' % self.output, 'w', 'utf_8') as output:
+            output.write('<html><head>\n%s\n</head><body><table><tr>\n' % self.css)
+            [self.writeBlame(revision, output) for revision in self.fileRevisions]
         return None
 
-    def writeBlame(self, revision):
+    def writeBlame(self, revision, output):
         blame = self.repo.git.blame(revision, '--root', '--show-number', '--show-name', '-s', self.input)
         formattedCode = self.extractAndFormatCodeFromBlame(blame, revision)
         timestamp = time.strftime("%a, %d %b %Y %H:%M:%S", time.gmtime(self.repo.commit(revision).committed_date))
-        self.output.write('<td><a class=timestamp, name=%s>%s</a><br />' % (revision, timestamp))
-        self.output.write('<pre>%s</pre></td>' % formattedCode)
+        output.write('<td><a class=timestamp, name=%s>%s</a><br />' % (revision, timestamp))
+        output.write('<pre>%s</pre></td>' % formattedCode)
         return None
 
     def extractAndFormatCodeFromBlame(self, blame, revision):
