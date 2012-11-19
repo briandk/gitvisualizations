@@ -33,8 +33,8 @@ class FileHandler(object):
         filepath = os.path.normpath(filepath)
         return filepath
 
-    def getOutputFile(self):
-        outputPath = self.makeOutputDirectory()
+    def getHTMLOutputFile(self):
+        path = '%s.html' % os.path.join(self.outputDirectory, self.outputFilename)
         return codecs.open(path, 'w', 'utf_8')
 
     def getOutput(self):
@@ -67,7 +67,7 @@ class GitTimeline(object):
 
     def writeTimeline(self):
         self.fileRevisions.reverse()
-        with codecs.open(self.files.html, 'w', 'utf_8') as output:
+        with self.files.getHTMLOutputFile() as output:
             output.write("<html><head><link rel='stylesheet' href='TimelineStyle.css'></head><body><table><tr>\n")
             [self.writeBlame(revision, output) for revision in self.fileRevisions]
         return None
