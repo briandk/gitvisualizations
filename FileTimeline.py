@@ -3,6 +3,7 @@ import os
 import sys
 import time
 import argparse
+import shutil
 
 # User-installed dependencies
 from pygments import highlight
@@ -14,8 +15,10 @@ class FileHandler(object):
     def __init__(self):
         self.args = self.parseCommandLineArguments()
         self.input = self.sanitizeFilepath(self.args.input)
-        self.output = self.getOutput()
-        self.css = open(self.sanitizeFilepath('%s/../TimelineStyle.css' % sys.argv[0]), 'r').read()
+        self.outputDirectory, self.outputFilename = self.getOutput()
+        self.html = '%s.html' % os.path.join(self.outputDirectory, self.outputFilename)
+        self.externalFiles = ['TimelineStyle.css']
+        self.copyExternalFiles()
 
     def parseCommandLineArguments(self):
         parser = argparse.ArgumentParser()
@@ -39,15 +42,21 @@ class FileHandler(object):
         (rootPath, fileExtension) = os.path.splitext(self.sanitizeFilepath(self.args.input))
         (inputFilePath, filename) = os.path.split(rootPath)
         if self.args.output is None:
-            outputPath = self.sanitizeFilepath(os.join('~/gitvisualizations', filename))
+            outputPath = self.sanitizeFilepath(os.path.join('~/gitvisualizations', filename))
         else:
             outputPath = self.sanitizeFilepath(self.args.output)
         self.makeOutputDirectory(outputPath)
-        return os.path.join(outputPath, filename)
+        return (os.path.join(outputPath), filename)
 
     def makeOutputDirectory(self, path):
         if os.path.exists(path) is not True:
             os.makedirs(path)
+
+    def copyExternalFiles(self):
+        for filename in self.externalFiles:
+            source = os.path.join(os.path.dirname(__file__), filename)
+            destination = os.path.join(self.outputDirectory, filename)
+            shutil.copy(source, destination)
 
 
 class GitTimeline(object):
@@ -70,8 +79,8 @@ class GitTimeline(object):
 
     def writeTimeline(self):
         self.fileRevisions.reverse()
-        with codecs.open('%s.html' % self.output, 'w', 'utf_8') as output:
-            output.write('<html><head>\n%s\n</head><body><table><tr>\n' % self.css)
+        with codecs.open(self.files.html, 'w', 'utf_8') as output:
+            output.write("<html><head><link rel='stylesheet' href='TimelineStyle.css'></head><body><table><tr>\n")
             [self.writeBlame(revision, output) for revision in self.fileRevisions]
         return None
 
