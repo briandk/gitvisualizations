@@ -84,6 +84,7 @@ class GitTimeline(object):
         self.blames = [self.repo.git.blame(revision, '--root', '--show-number', '--show-name', '-s', inputFile)
                           for revision in self.fileRevisions]
         self.timestamps = self.getTimestamps()
+        self.lexer = get_lexer_for_filename(inputFile)
         self.code = [self.ParseBlame(blame, revision) for blame in self.blames]
 
     def getTimestamps(self):
@@ -93,7 +94,9 @@ class GitTimeline(object):
     def ParseBlame(self, blame, revision):
         blamelets = [self.parseBlameLine(line, revision) for line in blame.splitlines()]
         rawcode = '%s\n' % '\n'.join([blamelet['code'] for blamelet in blamelets])
-        return {'code': rawcode}
+        lexer = self.lexer
+        formatter = HtmlFormatter(linenos=True, cssclass="source", style="monokai")
+        return {'pygmentizedCode': highlight(rawcode, lexer, formatter)}
 
     def parseBlameLine(self, line, revision):
         (blameInfo, code) = line.split(')', 1)
