@@ -62,8 +62,8 @@ class TimelineView(object):
     def __init__(self, inputFile):
         self.model = GitTimeline(inputFile)
 
-    def blames(self):
-        return self.model.blames
+    def snapshots(self):
+        return self.model.code
 
 class Controller(object):
     def __init__(self):
@@ -80,15 +80,20 @@ class GitTimeline(object):
 
     def __init__(self, inputFile):
         self.repo = Repo(inputFile)
-        self.fileRevisions = self.repo.git.log(inputFile, format='%H').splitlines()
-        self.fileRevisions.reverse()
-        self.blames = [self.getBlame(revision, inputFile) for revision in self.fileRevisions]
+        self.fileRevisions = self.repo.git.log('--reverse', inputFile, format='%H').splitlines()
+        self.blames = [self.repo.git.blame(revision, '--root', '--show-number', '--show-name', '-s', inputFile)
+                          for revision in self.fileRevisions]
+        self.timestamps = self.getTimestamps()
+        self.code = [self.ParseBlame(blame, revision) for blame in self.blames]
 
-    def getBlame(self, revision, filename):
-        blame = self.repo.git.blame(revision, '--root', '--show-number', '--show-name', '-s', filename)
+    def getTimestamps(self):
+        timestamps = [time.strftime("%a, %d %b %Y %H:%M:%S", time.gmtime(self.repo.commit(revision).committed_date))
+                         for revision in self.fileRevisions]
+
+    def ParseBlame(self, blame, revision):
         blamelets = [self.parseBlameLine(line, revision) for line in blame.splitlines()]
-        timestamp = time.strftime("%a, %d %b %Y %H:%M:%S", time.gmtime(self.repo.commit(revision).committed_date))
-        return {'code': blame}
+        rawcode = '%s\n' % '\n'.join([blamelet['code'] for blamelet in blamelets])
+        return {'code': rawcode}
 
     def parseBlameLine(self, line, revision):
         (blameInfo, code) = line.split(')', 1)
