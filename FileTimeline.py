@@ -63,7 +63,7 @@ class TimelineView(object):
         self.model = GitTimeline(inputFile)
 
     def snapshots(self):
-        return self.model.code
+        return self.model.snapshots
 
 class Controller(object):
     def __init__(self):
@@ -83,20 +83,23 @@ class GitTimeline(object):
         self.fileRevisions = self.repo.git.log('--reverse', inputFile, format='%H').splitlines()
         self.blames = [self.repo.git.blame(revision, '--root', '--show-number', '--show-name', '-s', inputFile)
                           for revision in self.fileRevisions]
-        self.timestamps = self.getTimestamps()
         self.lexer = get_lexer_for_filename(inputFile)
-        self.code = [self.ParseBlame(blame, revision) for blame in self.blames]
+        self.snapshots = [self.composeSnapshot(blame, revision) for blame in self.blames]
+        print self.snapshots[0]
 
-    def getTimestamps(self):
-        timestamps = [time.strftime("%a, %d %b %Y %H:%M:%S", time.gmtime(self.repo.commit(revision).committed_date))
-                         for revision in self.fileRevisions]
+    def composeSnapshot(self, blame, revision):
+        code = self.formatCode(blame, revision)
+        timestamp = time.strftime("%a, %d %b %Y %H:%M:%S", time.gmtime(self.repo.commit(revision).committed_date))
+        return {'code': code,
+                'timestamp': timestamp}
 
-    def ParseBlame(self, blame, revision):
+
+    def formatCode(self, blame, revision):
         blamelets = [self.parseBlameLine(line, revision) for line in blame.splitlines()]
         rawcode = '%s\n' % '\n'.join([blamelet['code'] for blamelet in blamelets])
         lexer = self.lexer
         formatter = HtmlFormatter(linenos=True, cssclass="source", style="monokai")
-        return {'pygmentizedCode': highlight(rawcode, lexer, formatter)}
+        return highlight(rawcode, lexer, formatter)
 
     def parseBlameLine(self, line, revision):
         (blameInfo, code) = line.split(')', 1)
