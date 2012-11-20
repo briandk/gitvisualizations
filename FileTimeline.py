@@ -6,10 +6,11 @@ import argparse
 import shutil
 
 # User-installed dependencies
+from git import *
 from pygments import highlight
 from pygments.lexers import get_lexer_for_filename
 from pygments.formatters import HtmlFormatter
-from git import *
+import pystache
 
 class FileHandler(object):
     def __init__(self):
@@ -57,36 +58,37 @@ class FileHandler(object):
             destination = os.path.join(self.outputDirectory, filename)
             shutil.copy(source, destination)
 
+class TimelineView(object):
+    def __init__(self, inputFile):
+        self.model = GitTimeline(inputFile)
+
+    def blames(self):
+        return self.model.blames
+
+class Controller(object):
+    def __init__(self):
+        self.files = FileHandler()
+        self.view = TimelineView(self.files.input)
+
+    def render(self):
+        renderer = pystache.Renderer()
+        with self.files.getHTMLOutputFile() as output:
+            output.write(renderer.render(self.view))
+        return None
 
 class GitTimeline(object):
 
-    def __init__(self):
-        self.files = FileHandler()
-        self.repo = Repo(self.files.input)
-        self.fileRevisions = self.repo.git.log(self.files.input, format='%H').splitlines()
-
-    def writeTimeline(self):
+    def __init__(self, inputFile):
+        self.repo = Repo(inputFile)
+        self.fileRevisions = self.repo.git.log(inputFile, format='%H').splitlines()
         self.fileRevisions.reverse()
-        with self.files.getHTMLOutputFile() as output:
-            output.write("<html><head><link rel='stylesheet' href='TimelineStyle.css'></head><body><table><tr>\n")
-            [self.writeBlame(revision, output) for revision in self.fileRevisions]
-        return None
+        self.blames = [self.getBlame(revision, inputFile) for revision in self.fileRevisions]
 
-    def writeBlame(self, revision, output):
-        blame = self.repo.git.blame(revision, '--root', '--show-number', '--show-name', '-s', self.files.input)
-        formattedCode = self.extractAndFormatCodeFromBlame(blame, revision)
+    def getBlame(self, revision, filename):
+        blame = self.repo.git.blame(revision, '--root', '--show-number', '--show-name', '-s', filename)
+        blamelets = [self.parseBlameLine(line, revision) for line in blame.splitlines()]
         timestamp = time.strftime("%a, %d %b %Y %H:%M:%S", time.gmtime(self.repo.commit(revision).committed_date))
-        output.write('<td><a class=timestamp, name=%s>%s</a><br />' % (revision, timestamp))
-        output.write('<pre>%s</pre></td>' % formattedCode)
-        return None
-
-    def extractAndFormatCodeFromBlame(self, blame, revision):
-        code = [self.parseBlameLine(line, revision)['code']
-                    for line in blame.splitlines()]
-        code = '%s\n' % '\n'.join(code)
-        lexer = get_lexer_for_filename(self.files.input)
-        formatter = HtmlFormatter(linenos=True, cssclass="source", style="monokai")
-        return highlight(code, lexer, formatter)
+        return {'code': blame}
 
     def parseBlameLine(self, line, revision):
         (blameInfo, code) = line.split(')', 1)
@@ -129,10 +131,8 @@ def outputCommits():
     '''Creates an HTML timeline
     of all a file's revisions.
     '''
-
-    t = GitTimeline()
-    t.writeTimeline()
-    return None
+    c = Controller()
+    c.render()
 
 if __name__ == '__main__':
     outputCommits()
