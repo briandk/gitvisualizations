@@ -59,8 +59,8 @@ class FileHandler(object):
             shutil.copy(source, destination)
 
 class TimelineView(object):
-    def __init__(self, inputFile):
-        self.model = GitTimeline(inputFile)
+    def __init__(self, model):
+        self.model = model
 
     def snapshots(self):
         return self.model.snapshots
@@ -68,7 +68,8 @@ class TimelineView(object):
 class Controller(object):
     def __init__(self):
         self.files = FileHandler()
-        self.view = TimelineView(self.files.input)
+        self.model = GitTimeline(self.files.input)
+        self.view = TimelineView(self.model)
 
     def render(self):
         renderer = pystache.Renderer()
