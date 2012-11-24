@@ -12,7 +12,9 @@
       {{#snapshots}}
         <td>
           <div class="timestamp">{{timestamp}}</div>
-          <pre class="language-clike"><code>{{code}}</code>
+          <div class="codesnapshot">
+            <pre class="language-clike" data-line="1-5"><code>{{code}}</code>
+          </div>
           </pre>
         </td>
       {{/snapshots}}
