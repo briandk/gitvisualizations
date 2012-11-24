@@ -20,7 +20,8 @@ class FileHandler(object):
         self.html = '%s.html' % os.path.join(self.outputDirectory, self.outputFilename)
         self.externalFiles = ['TimelineStyle.css',
                               'prism-dark.js',
-                              'prism-dark.css']
+                              'prism-dark.css',
+                              'jQuery.js']
         self.copyExternalFiles()
 
     def parseCommandLineArguments(self):
