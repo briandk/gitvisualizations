@@ -1,20 +1,22 @@
 <html>
 <head>
   <title>Timeline</title>
+  <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" href="TimelineStyle.css">
-  <link rel="stylesheet" type="text/css" href="xRay.css">
+  <link href="prism.css" rel="stylesheet">
 </head>
 <body>
   <table>
     <tr>
       {{#snapshots}}
-      <td>
-        <span class="timestamp">{{timestamp}}</span>
-        {{{code}}}
-      </td>
+        <td>
+          <div class="timestamp">{{timestamp}}</div>
+          <pre class="language-clike"><code>{{code}}</code>
+          </pre>
+        </td>
       {{/snapshots}}
     </tr>
   </table>
-
+  <script src="prism.js"></script>
 </body>
 </html>

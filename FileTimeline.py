@@ -18,7 +18,9 @@ class FileHandler(object):
         self.input = self.sanitizeFilepath(self.args.input)
         self.outputDirectory, self.outputFilename = self.getOutput()
         self.html = '%s.html' % os.path.join(self.outputDirectory, self.outputFilename)
-        self.externalFiles = ['TimelineStyle.css']
+        self.externalFiles = ['TimelineStyle.css',
+                              'prism-dark.js',
+                              'prism-dark.css']
         self.copyExternalFiles()
 
     def parseCommandLineArguments(self):
@@ -86,7 +88,6 @@ class GitTimeline(object):
                           for revision in self.fileRevisions]
         self.lexer = get_lexer_for_filename(inputFile)
         self.snapshots = [self.composeSnapshot(blame, revision) for blame in self.blames]
-        print self.snapshots[0]
 
     def composeSnapshot(self, blame, revision):
         code = self.formatCode(blame, revision)
@@ -98,9 +99,7 @@ class GitTimeline(object):
     def formatCode(self, blame, revision):
         blamelets = [self.parseBlameLine(line, revision) for line in blame.splitlines()]
         rawcode = '%s\n' % '\n'.join([blamelet['code'] for blamelet in blamelets])
-        lexer = self.lexer
-        formatter = HtmlFormatter(linenos=True, cssclass="source", style="monokai")
-        return highlight(rawcode, lexer, formatter)
+        return rawcode
 
     def parseBlameLine(self, line, revision):
         (blameInfo, code) = line.split(')', 1)
