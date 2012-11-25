@@ -10,8 +10,9 @@ td {
   display: block;
 }
 
-code {
-  /*font-size: 2pt !important*/
+.codesnapshot {
+  line-height: 1.3;
+  font-size: 1pt
 }
 
 /*--- Changing styles for x-ray mode ---*/

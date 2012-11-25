@@ -19,8 +19,8 @@ class FileHandler(object):
         self.outputDirectory, self.outputFilename = self.getOutput()
         self.html = '%s.html' % os.path.join(self.outputDirectory, self.outputFilename)
         self.externalFiles = ['TimelineStyle.css',
-                              'prism-dark.js',
-                              'prism-dark.css',
+                              'prism.js',
+                              'prism.css',
                               'jQuery.js',
                               'bootstrap.min.js',
                               'bootstrap.css']
