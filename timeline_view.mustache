@@ -14,7 +14,9 @@
     <tr>
       {{#snapshots}}
         <td>
-          <div class="timestamp">{{timestamp}}</div>
+          <div class="timestamp">
+            <time id="{{revision}}">{{timestamp}}</time>
+          </div>
           <div class="codesnapshot">
             <pre class="language-clike" data-line="{{changedLines}}"><code>{{code}}</code>
           </div>
