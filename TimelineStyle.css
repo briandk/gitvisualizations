@@ -11,11 +11,18 @@ td {
 }
 
 .codesnapshot {
-  line-height: 1.3;
-  font-size: 1pt
+  line-height: 1.4em;
+}
+
+.timestamp {
+  font-size: 100% !important;
 }
 
 /*--- Changing styles for x-ray mode ---*/
-pre .xray {
-  font-color: gray !important;
+code.xray {
+  color: gray !important;
+}
+
+code.xray > span {
+  background: green;
 }
