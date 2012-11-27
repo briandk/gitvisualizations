@@ -67,7 +67,7 @@ class TimelineView(object):
     def snapshots(self):
         return self.model.snapshots
 
-    def  revisions(self):
+    def revisions(self):
         return ','.join(self.model.fileRevisions)
 
 class Controller(object):
