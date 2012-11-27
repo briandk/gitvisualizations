@@ -90,33 +90,30 @@ class GitTimeline(object):
         self.blames = [self.repo.git.blame(revision, '--root', '--show-number', '--show-name', '-s', inputFile)
                           for revision in self.fileRevisions]
         self.lexer = get_lexer_for_filename(inputFile)
-        self.snapshots = [self.composeSnapshot(blame, revision) for blame in self.blames]
+        self.snapshots = [self.composeSnapshot(blame, revision) for (blame, revision) in zip(self.blames, self.fileRevisions)]
+        print self.snapshots[0]['changedLines']
 
     def composeSnapshot(self, blame, revision):
-        code = self.formatCode(blame, revision)
-        timestamp = time.strftime("%a, %d %b %Y %H:%M:%S", time.gmtime(self.repo.commit(revision).committed_date))
-        return {'code': code,
-                'timestamp': timestamp}
-
-
-    def formatCode(self, blame, revision):
         blamelets = [self.parseBlameLine(line, revision) for line in blame.splitlines()]
-        rawcode = '%s\n' % '\n'.join([blamelet['code'] for blamelet in blamelets])
-        return rawcode
+        timestamp = time.strftime("%a, %d %b %Y %H:%M:%S", time.gmtime(self.repo.commit(revision).committed_date))
+        return {'blamelets': blamelets,
+                'code': '\n'.join([blamelet['code'] for blamelet in blamelets]),
+                'changedLines': ','.join([blamelet['newLineNumber'] for blamelet in blamelets if blamelet['isChanged']]),
+                'revision': revision,
+                'timestamp': timestamp}
 
     def parseBlameLine(self, line, revision):
         (blameInfo, code) = line.split(')', 1)
         (sha, fileName, oldLineNumber, newLineNumber) = blameInfo.split()
-        isChanged = "unchanged"
-        if (revision.startswith(sha)):
-            isChanged = "changed"
-        output = {'sha': sha,
-                  'fileName': fileName,
-                  'oldLineNumber': oldLineNumber,
-                  'newLineNumber': newLineNumber,
-                  'isChanged': isChanged,
-                  'code': code}
-        return output
+        isChanged = False
+        if (revision.startswith(sha) is True):
+            isChanged = True
+        return {'sha': sha,
+                'fileName': fileName,
+                'oldLineNumber': oldLineNumber,
+                'newLineNumber': newLineNumber,
+                'isChanged': isChanged,
+                'code': code}
 
 """To handle the blame:
 
