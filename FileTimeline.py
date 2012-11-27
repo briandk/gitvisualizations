@@ -7,9 +7,6 @@ import shutil
 
 # User-installed dependencies
 from git import *
-from pygments import highlight
-from pygments.lexers import get_lexer_for_filename
-from pygments.formatters import HtmlFormatter
 import pystache
 
 class FileHandler(object):
@@ -70,6 +67,9 @@ class TimelineView(object):
     def snapshots(self):
         return self.model.snapshots
 
+    def  revisions(self):
+        return ','.join(self.model.fileRevisions)
+
 class Controller(object):
     def __init__(self):
         self.files = FileHandler()
@@ -89,7 +89,6 @@ class GitTimeline(object):
         self.fileRevisions = self.repo.git.log('--reverse', inputFile, format='%H').splitlines()
         self.blames = [self.repo.git.blame(revision, '--root', '--show-number', '--show-name', '-s', inputFile)
                           for revision in self.fileRevisions]
-        self.lexer = get_lexer_for_filename(inputFile)
         self.snapshots = [self.composeSnapshot(blame, revision) for (blame, revision) in zip(self.blames, self.fileRevisions)]
         print self.snapshots[0]['changedLines']
 
