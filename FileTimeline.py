@@ -68,7 +68,7 @@ class TimelineView(object):
         return self.model.snapshots
 
     def revisions(self):
-        return ','.join(self.model.fileRevisions)
+        return ','.join(['"%s"' % revision for revision in self.model.fileRevisions])
 
 class Controller(object):
     def __init__(self):
@@ -90,7 +90,6 @@ class GitTimeline(object):
         self.blames = [self.repo.git.blame(revision, '--root', '--show-number', '--show-name', '-s', inputFile)
                           for revision in self.fileRevisions]
         self.snapshots = [self.composeSnapshot(blame, revision) for (blame, revision) in zip(self.blames, self.fileRevisions)]
-        print self.snapshots[0]['changedLines']
 
     def composeSnapshot(self, blame, revision):
         blamelets = [self.parseBlameLine(line, revision) for line in blame.splitlines()]
@@ -113,29 +112,6 @@ class GitTimeline(object):
                 'newLineNumber': newLineNumber,
                 'isChanged': isChanged,
                 'code': code}
-
-"""To handle the blame:
-
-- Run the blame command
-- Capture the result as a multi-line string
-- split the string as line =  blame.splitlines()
-- split the line as line = line.split(None, 4)
-- Take the fourth element in each line list and concatenate them
-    using '%s\n' % blame[24].split(None, 4)[4]
-
-There's an issue of parsing, reconstructing, and splitting.
-
-- The raw blame has to be split
-- The split blame lines are parsed
-- The extracted code is rejoined
-- The rejoined code is pygmentized
-- The pygmentized code is resplit
-- The split pygmentized code is marked up with "changed"
-- The split lines are reconstructed and written to file
-"""
-
-
-
 
 def outputCommits():
     '''Creates an HTML timeline
