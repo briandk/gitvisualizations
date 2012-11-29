@@ -20,7 +20,8 @@ class FileHandler(object):
                               'prism.css',
                               'jQuery.js',
                               'bootstrap.min.js',
-                              'bootstrap.css']
+                              'bootstrap.css',
+                              'Timeline.js']
         self.copyExternalFiles()
 
     def parseCommandLineArguments(self):
