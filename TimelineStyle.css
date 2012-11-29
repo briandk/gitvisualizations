@@ -26,3 +26,9 @@ code.xray {
 code.xray > span {
   background: green;
 }
+
+/*--- Ensuring the typeahead dropdowns aren't obscured by the navbar ---*/
+
+.typeahead.dropdown-menu {
+  z-index: 2000;
+}
