@@ -99,6 +99,7 @@ class GitTimeline(object):
                 'code': '\n'.join([blamelet['code'] for blamelet in blamelets]),
                 'changedLines': ','.join([blamelet['newLineNumber'] for blamelet in blamelets if blamelet['isChanged']]),
                 'revision': revision,
+                'shortHash': revision[0:9],
                 'timestamp': timestamp}
 
     def parseBlameLine(self, line, revision):
