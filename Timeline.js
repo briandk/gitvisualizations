@@ -57,9 +57,19 @@ timeline.navigateToPreviousCommit = function () {
   timeline.goToCommit(sha);
 };
 
+timeline.bindHashesToShaLinks = function () {
+  $('.shaLink').each(function (i) { $(this).data("sha", timeline.revisions[i]) });
+}
+
+timeline.navigateToCommitFromLink = function () {
+  timeline.goToCommit($(this).data("sha"));
+}
+
 $(".toggleable").on('click', timeline.toggleBtn);
 $("#shaForm").on('submit', function () {return(false)});
 $("#goToSha").on('click', timeline.navigateToRevisionFromSearch);
 $('#next-commit-btn').on('click', timeline.navigateToNextCommit);
 $('#prev-commit-btn').on('click', timeline.navigateToPreviousCommit);
+timeline.bindHashesToShaLinks();
+$('.shaLink').on('click', timeline.navigateToCommitFromLink);
 timeline.update(timeline.revisions[0]);
