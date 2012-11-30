@@ -4,10 +4,11 @@ $('#shaSearch').typeahead( {source: revisions} );
 var timeline = {};
 timeline.counter = 0;
 timeline.revisions = revisions;
+timeline.scrollSpeed = 400;
 timeline.toggleBtn = function () { $(this).toggleClass("active") };
 timeline.goToCommit = function(sha) {
   var destinationOffset = $('#' + sha).offset().left;
-  $("body").animate({scrollLeft: destinationOffset}, 400);
+  $("body").animate({scrollLeft: destinationOffset}, this.scrollSpeed);
 };
 timeline.navigateToRevisionFromSearch = function () {
   var sha = $('#shaSearch').val();
