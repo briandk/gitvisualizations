@@ -21,6 +21,24 @@ timeline.updateDisplay = function(sha) {
   this.shaCounter = this.revisions.indexOf(sha);
   shortSha = sha.slice(0, this.shortShaLength);
   $('#shaDisplay').html(shortSha);
+  timeline.updatePagerButtons();
+}
+
+timeline.updatePagerButtons = function () {
+  var prevCommit = $('#prev-commit-btn');
+  var nextCommit = $('#next-commit-btn');
+
+  if (this.shaCounter == 0) {
+    prevCommit.addClass("disabled");
+  } else {
+    prevCommit.removeClass("disabled");
+  }
+
+  if (this.shaCounter == (this.revisions.length - 1)) {
+    nextCommit.addClass("disabled");
+  } else {
+    nextCommit.removeClass("disabled");
+  }
 }
 
 $(".toggleable").bind('click', timeline.toggleBtn);
