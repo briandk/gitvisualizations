@@ -15,14 +15,15 @@ timeline.goToCommit = function(sha) {
 timeline.navigateToRevisionFromSearch = function () {
   var sha = $('#shaSearch').val();
   timeline.goToCommit(sha);
-  timeline.updateDisplay(sha);
-}
-timeline.updateDisplay = function(sha) {
+  timeline.update(sha);
+};
+
+timeline.update = function(sha) {
   this.shaCounter = this.revisions.indexOf(sha);
   shortSha = sha.slice(0, this.shortShaLength);
   $('#shaDisplay').html(shortSha);
   timeline.updatePagerButtons();
-}
+};
 
 timeline.updatePagerButtons = function () {
   var prevCommit = $('#prev-commit-btn');
@@ -39,9 +40,9 @@ timeline.updatePagerButtons = function () {
   } else {
     nextCommit.removeClass("disabled");
   }
-}
+};
 
 $(".toggleable").bind('click', timeline.toggleBtn);
 $("#shaForm").on('submit', function () {return(false)});
 $("#goToSha").on('click', timeline.navigateToRevisionFromSearch);
-timeline.updateDisplay(timeline.revisions[0]);
+timeline.update(timeline.revisions[0]);
