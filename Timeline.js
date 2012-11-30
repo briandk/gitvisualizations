@@ -9,8 +9,8 @@ timeline.shortShaLength = 8
 timeline.toggleBtn = function () { $(this).toggleClass("active") };
 timeline.goToCommit = function(sha) {
   var destinationOffset = $('#' + sha).offset().left;
-  $("body").animate({scrollLeft: destinationOffset}, this.scrollSpeed);
-  this.updateDisplay
+  $("body").animate({scrollLeft: destinationOffset}, timeline.scrollSpeed);
+  timeline.update(sha);
 };
 timeline.navigateToRevisionFromSearch = function () {
   var sha = $('#shaSearch').val();
@@ -19,8 +19,8 @@ timeline.navigateToRevisionFromSearch = function () {
 };
 
 timeline.update = function(sha) {
-  this.shaCounter = this.revisions.indexOf(sha);
-  shortSha = sha.slice(0, this.shortShaLength);
+  timeline.shaCounter = timeline.revisions.indexOf(sha);
+  shortSha = sha.slice(0, timeline.shortShaLength);
   $('#shaDisplay').html(shortSha);
   timeline.updatePagerButtons();
 };
@@ -42,7 +42,18 @@ timeline.updatePagerButtons = function () {
   }
 };
 
-$(".toggleable").bind('click', timeline.toggleBtn);
+timeline.navigateToNextCommit = function () {
+  var sha = timeline.revisions[(timeline.shaCounter + 1)];
+  timeline.goToCommit(sha);
+};
+
+timeline.navigateToPreviousCommit = function () {
+  var sha = timeline.revisions[(timeline.shaCounter - 1)];
+  timeline.goToCommit(sha);
+};
+
+$(".toggleable").on('click', timeline.toggleBtn);
 $("#shaForm").on('submit', function () {return(false)});
 $("#goToSha").on('click', timeline.navigateToRevisionFromSearch);
+$('#next-commit-btn').on('click', timeline.navigateToNextCommit);
 timeline.update(timeline.revisions[0]);
