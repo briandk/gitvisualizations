@@ -18,7 +18,7 @@ td {
   font-size: 100% !important;
 }
 
-/*--- Changing styles for x-ray mode ---*/
+/* Changing styles for x-ray mode */
 code.xray {
   color: gray !important;
 }
@@ -27,8 +27,13 @@ code.xray > span {
   background: green;
 }
 
-/*--- Ensuring the typeahead dropdowns aren't obscured by the navbar ---*/
-
+/* Ensuring the typeahead dropdowns aren't obscured by the navbar */
 .typeahead.dropdown-menu {
   z-index: 2000;
+}
+
+/* Making the search boxes full height for the navbar */
+
+#shaSearch {
+  height: 100%;
 }
