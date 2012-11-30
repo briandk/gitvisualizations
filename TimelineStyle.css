@@ -40,3 +40,8 @@ code.xray > span {
 .pad-body-for-navbar {
   padding-top: 50px;
 }
+
+.pager {
+  margin-bottom: 0% !important;
+  margin-top: 3% !important;
+}
