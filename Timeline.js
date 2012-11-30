@@ -2,9 +2,10 @@
 $('#shaSearch').typeahead( {source: revisions} );
 
 var timeline = {};
-timeline.counter = 0;
 timeline.revisions = revisions;
 timeline.scrollSpeed = 400;
+timeline.shaCounter = 0;
+timeline.shortShaLength = 8
 timeline.toggleBtn = function () { $(this).toggleClass("active") };
 timeline.goToCommit = function(sha) {
   var destinationOffset = $('#' + sha).offset().left;
@@ -18,3 +19,4 @@ timeline.navigateToRevisionFromSearch = function () {
 $(".toggleable").bind('click', timeline.toggleBtn);
 $("#shaForm").on('submit', function () {return(false)});
 $("#goToSha").on('click', timeline.navigateToRevisionFromSearch);
+$('#shaDisplay').html(timeline.revisions[timeline.shaCounter].slice(0,timeline.shortShaLength));
