@@ -42,6 +42,11 @@ timeline.updatePagerButtons = function () {
   }
 };
 
+timeline.navigateToPreviousCommit = function () {
+  var sha = timeline.revisions[(timeline.shaCounter - 1)];
+  timeline.goToCommit(sha);
+}
+
 timeline.navigateToNextCommit = function () {
   var sha = timeline.revisions[(timeline.shaCounter + 1)];
   timeline.goToCommit(sha);
@@ -56,4 +61,5 @@ $(".toggleable").on('click', timeline.toggleBtn);
 $("#shaForm").on('submit', function () {return(false)});
 $("#goToSha").on('click', timeline.navigateToRevisionFromSearch);
 $('#next-commit-btn').on('click', timeline.navigateToNextCommit);
+$('#prev-commit-btn').on('click', timeline.navigateToPreviousCommit);
 timeline.update(timeline.revisions[0]);
