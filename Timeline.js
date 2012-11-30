@@ -10,13 +10,20 @@ timeline.toggleBtn = function () { $(this).toggleClass("active") };
 timeline.goToCommit = function(sha) {
   var destinationOffset = $('#' + sha).offset().left;
   $("body").animate({scrollLeft: destinationOffset}, this.scrollSpeed);
+  this.updateDisplay
 };
 timeline.navigateToRevisionFromSearch = function () {
   var sha = $('#shaSearch').val();
   timeline.goToCommit(sha);
+  timeline.updateDisplay(sha);
+}
+timeline.updateDisplay = function(sha) {
+  this.shaCounter = this.revisions.indexOf(sha);
+  shortSha = sha.slice(0, this.shortShaLength);
+  $('#shaDisplay').html(shortSha);
 }
 
 $(".toggleable").bind('click', timeline.toggleBtn);
 $("#shaForm").on('submit', function () {return(false)});
 $("#goToSha").on('click', timeline.navigateToRevisionFromSearch);
-$('#shaDisplay').html(timeline.revisions[timeline.shaCounter].slice(0,timeline.shortShaLength));
+timeline.updateDisplay(timeline.revisions[0]);
