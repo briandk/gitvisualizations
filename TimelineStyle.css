@@ -33,7 +33,10 @@ code.xray > span {
 }
 
 /* Making the search boxes full height for the navbar */
-
 #shaSearch {
   height: 100%;
+}
+
+.pad-body-for-navbar {
+  padding-top: 50px;
 }
