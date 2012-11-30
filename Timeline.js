@@ -1,21 +1,11 @@
 // Handling type-ahead functionality
 $('#shaSearch').typeahead( {source: revisions} );
 
-
-var timeline = {
-  toggleBtn: function (evt) {
-    //console.log(this.id);
-
-    $(this).toggleClass("active");
-    /*
-    if ( $(this).hasClass("active") ) {
-      $(this).removeClass("active");
-    } else {
-      $(this).addClass("active");
-    }
-    */
-  }
-
-};
+var timeline = {};
+timeline.toggleBtn = function () { $(this).toggleClass("active") };
+timeline.goToCommit = function(commitHash) {
+  destinationOffset = $('#' + commitHash).offset().left
+  $(window).scrollLeft(destinationOffset)
+}
 
 $(".toggleable").bind('click', timeline.toggleBtn);
