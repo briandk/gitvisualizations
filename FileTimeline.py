@@ -7,9 +7,6 @@ import shutil
 
 # User-installed dependencies
 from git import *
-from pygments import highlight
-from pygments.lexers import get_lexer_for_filename
-from pygments.formatters import HtmlFormatter
 import pystache
 
 class FileHandler(object):
@@ -19,8 +16,12 @@ class FileHandler(object):
         self.outputDirectory, self.outputFilename = self.getOutput()
         self.html = '%s.html' % os.path.join(self.outputDirectory, self.outputFilename)
         self.externalFiles = ['TimelineStyle.css',
-                              'prism-dark.js',
-                              'prism-dark.css']
+                              'prism.js',
+                              'prism.css',
+                              'jQuery.js',
+                              'bootstrap.min.js',
+                              'bootstrap.css',
+                              'Timeline.js']
         self.copyExternalFiles()
 
     def parseCommandLineArguments(self):
@@ -67,6 +68,9 @@ class TimelineView(object):
     def snapshots(self):
         return self.model.snapshots
 
+    def revisions(self):
+        return ','.join(['"%s"' % revision for revision in self.model.fileRevisions])
+
 class Controller(object):
     def __init__(self):
         self.files = FileHandler()
@@ -86,57 +90,30 @@ class GitTimeline(object):
         self.fileRevisions = self.repo.git.log('--reverse', inputFile, format='%H').splitlines()
         self.blames = [self.repo.git.blame(revision, '--root', '--show-number', '--show-name', '-s', inputFile)
                           for revision in self.fileRevisions]
-        self.lexer = get_lexer_for_filename(inputFile)
-        self.snapshots = [self.composeSnapshot(blame, revision) for blame in self.blames]
+        self.snapshots = [self.composeSnapshot(blame, revision) for (blame, revision) in zip(self.blames, self.fileRevisions)]
 
     def composeSnapshot(self, blame, revision):
-        code = self.formatCode(blame, revision)
-        timestamp = time.strftime("%a, %d %b %Y %H:%M:%S", time.gmtime(self.repo.commit(revision).committed_date))
-        return {'code': code,
-                'timestamp': timestamp}
-
-
-    def formatCode(self, blame, revision):
         blamelets = [self.parseBlameLine(line, revision) for line in blame.splitlines()]
-        rawcode = '%s\n' % '\n'.join([blamelet['code'] for blamelet in blamelets])
-        return rawcode
+        timestamp = time.strftime("%a, %d %b %Y %H:%M:%S", time.gmtime(self.repo.commit(revision).committed_date))
+        return {'blamelets': blamelets,
+                'code': '\n'.join([blamelet['code'] for blamelet in blamelets]),
+                'changedLines': ','.join([blamelet['newLineNumber'] for blamelet in blamelets if blamelet['isChanged']]),
+                'revision': revision,
+                'shortHash': revision[0:9],
+                'timestamp': timestamp}
 
     def parseBlameLine(self, line, revision):
         (blameInfo, code) = line.split(')', 1)
         (sha, fileName, oldLineNumber, newLineNumber) = blameInfo.split()
-        isChanged = "unchanged"
-        if (revision.startswith(sha)):
-            isChanged = "changed"
-        output = {'sha': sha,
-                  'fileName': fileName,
-                  'oldLineNumber': oldLineNumber,
-                  'newLineNumber': newLineNumber,
-                  'isChanged': isChanged,
-                  'code': code}
-        return output
-
-"""To handle the blame:
-
-- Run the blame command
-- Capture the result as a multi-line string
-- split the string as line =  blame.splitlines()
-- split the line as line = line.split(None, 4)
-- Take the fourth element in each line list and concatenate them
-    using '%s\n' % blame[24].split(None, 4)[4]
-
-There's an issue of parsing, reconstructing, and splitting.
-
-- The raw blame has to be split
-- The split blame lines are parsed
-- The extracted code is rejoined
-- The rejoined code is pygmentized
-- The pygmentized code is resplit
-- The split pygmentized code is marked up with "changed"
-- The split lines are reconstructed and written to file
-"""
-
-
-
+        isChanged = False
+        if (revision.startswith(sha) is True):
+            isChanged = True
+        return {'sha': sha,
+                'fileName': fileName,
+                'oldLineNumber': oldLineNumber,
+                'newLineNumber': newLineNumber,
+                'isChanged': isChanged,
+                'code': code}
 
 def outputCommits():
     '''Creates an HTML timeline
