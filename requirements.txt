@@ -1,0 +1,5 @@
+# For interacting with git repositories:
+GitPython>=0.3
+
+# Templating library used in creating HTML files:
+pystache>=0.5
