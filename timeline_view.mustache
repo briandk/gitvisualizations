@@ -3,20 +3,64 @@
   <title>Timeline</title>
   <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" href="TimelineStyle.css">
-  <link href="prism.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="prism.css">
+  <link rel="stylesheet" type="text/css" href="bootstrap.css">
 </head>
-<body>
+<body class="pad-body-for-navbar">
   <table>
     <tr>
       {{#snapshots}}
-        <td>
-          <div class="timestamp">{{timestamp}}</div>
-          <pre class="language-clike"><code>{{code}}</code>
+        <td id="{{revision}}">
+          <div class="timestamp">
+            <time>{{timestamp}}</time>
+          </div id="sha">
+            <code><a class="shaLink" href="#">{{{shortHash}}}</a></code>
+          <div class="codesnapshot">
+            <pre class="language-clike" data-line="{{changedLines}}"><code>{{code}}</code>
+          </div>
           </pre>
         </td>
       {{/snapshots}}
     </tr>
   </table>
-  <script src="prism.js"></script>
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <a class="brand" href="#">CodeTimeline</a>
+      <ul class="nav">
+        <li class="divider-vertical"></li>
+        <li class="inactive toggleable" id="xrayToggle"><a href="#">X-Ray Mode</a></li>
+        <li class="inactive toggleable" id="zoomToggle"><a href="#">Zoom</a></li>
+        <li class="divider-vertical"></li>
+        <li>
+          <ul class="pager">
+            <li class="pager-btn" id="prev-commit-btn"><a href="#">&larr; Previous</a></li>
+            <li class="pager-btn disabled">
+              <a href="#"><code id="shaDisplay">shaDisplay</code></a></li>
+            <li class="pager-btn" id="next-commit-btn"><a href="#">Next &rarr;</a></li>
+          </ul>
+        </li>
+        <li class="divider-vertical"></li>
+      </ul>
+      <form class="navbar-form form-search" id="shaForm">
+        <div class="input-append">
+          <input type="text"
+                 class="search-query span2"
+                 id="shaSearch"
+                 autocomplete="off"
+                 placeholder="Type a SHA-1">
+          <button type=""
+                  class="btn"
+                  id="goToSha">Go!</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script src="prism.js" type="text/javascript"></script>
+  <script src="jQuery.js" type="text/javascript"></script>
+  <script src="bootstrap.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    var revisions = [{{{revisions}}}];
+  </script>
+  <script src="Timeline.js" type="text/javascript"></script>
 </body>
 </html>
