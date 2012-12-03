@@ -37,10 +37,16 @@
         <li class="divider-vertical"></li>
         <li>
           <ul class="pager">
-            <li class="pager-btn" id="prev-commit-btn"><a href="#">&larr; Previous</a></li>
+            <li id="prev-commit-btn"
+                class="pager-btn"
+                data-counter-increment="-1">
+                <a href="#">&larr; Previous</a></li>
             <li class="pager-btn disabled">
               <a href="#"><code id="shaDisplay">shaDisplay</code></a></li>
-            <li class="pager-btn" id="next-commit-btn"><a href="#">Next &rarr;</a></li>
+            <li id="next-commit-btn"
+                class="pager-btn"
+                data-counter-increment="+1">
+                <a href="#">Next &rarr;</a></li>
           </ul>
         </li>
         <li class="divider-vertical"></li>

@@ -44,15 +44,13 @@ timeline.updatePagerButtons = function () {
   }
 };
 
-timeline.navigateToPreviousCommit = function () {
-  var sha = timeline.revisions[(timeline.shaCounter - 1)];
-  timeline.goToCommit(sha);
+timeline.navigateToCommitFromPager = function() {
+  if (!$(this).hasClass("disabled")) {
+    var counterIncrement = parseFloat($(this).attr('data-counter-increment'));
+    var sha = timeline.revisions[timeline.shaCounter + counterIncrement];
+    timeline.goToCommit(sha);
+  }
 }
-
-timeline.navigateToNextCommit = function () {
-  var sha = timeline.revisions[(timeline.shaCounter + 1)];
-  timeline.goToCommit(sha);
-};
 
 timeline.bindHashesToShaLinks = function () {
   $('.shaLink')
@@ -79,7 +77,6 @@ timeline.zoom = function () {
 $(".toggleable").on('click', timeline.toggleBtn);
 $("#shaForm").on('submit', function () {return(false)});
 $("#goToSha").on('click', timeline.navigateToRevisionFromSearch);
-$('#next-commit-btn').on('click', timeline.navigateToNextCommit);
-$('#prev-commit-btn').on('click', timeline.navigateToPreviousCommit);
+$('.pager-btn').on('click', timeline.navigateToCommitFromPager);
 timeline.bindHashesToShaLinks();
 timeline.update(timeline.revisions[0]);
