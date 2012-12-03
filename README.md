@@ -38,7 +38,7 @@ We don't have separate instructions for Windows right now, because I can't curre
 	$ which pip # should return pip's location, if it's installed
 	```
 
-5. Use pip to install the required python dependencies for this project
+5. From your clone of our project directory, use pip to install the required python dependencies for this project
 
 	```bash
 	$ pip install -r requirements.txt
