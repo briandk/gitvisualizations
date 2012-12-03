@@ -60,21 +60,17 @@ timeline.bindHashesToShaLinks = function () {
 
 timeline.zoom = function () {
   // To zoom
-    // get the scale factor
+    // get the zoom menu item's scale factor
     // get the left-offset of the currently displayed commit
     // set the transform-origin of the table to be the left offset
     // transform the table
+      // get table transforms
+      // apply table transforms
     // change the metadata font size
 
   var scaleFactor = parseFloat($(this).attr("data-zoom"));
   var scaleFactorAsString = "scale(" + scaleFactor + ")";
   var fontScale = (100/scaleFactor);
-
-  var tableTransforms = {"-webkit-transform":   scaleFactorAsString,
-                         "-ms-transform":       scaleFactorAsString,
-                         "-moz-transform":      scaleFactorAsString,
-                         "-o-transform-origin": scaleFactorAsString};
-
   var metaDataTransforms = {"font-size": (fontScale + '%')};
 
   $('table').css(tableTransforms);
@@ -87,6 +83,15 @@ timeline.getOriginForTransform = function(selection) {
                     "-ms-transform-origin":     "top " + leftOffset,
                     "-moz-transform-origin":    "top " + leftOffset,
                     "-o-transform-origin":      "top " + leftOffset};
+  return properties
+};
+
+timeline.getScaleTransforms = function(scaleFactor) {
+  var scaleAsString = "scale(" + scaleFactor + ")";
+  var properties = {"-webkit-transform": scaleAsString,
+                    "-ms-transform":     scaleAsString,
+                    "-moz-transform":    scaleAsString,
+                    "-o-transform":      scaleAsString};
   return properties
 }
 
