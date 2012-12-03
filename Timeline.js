@@ -63,6 +63,22 @@ timeline.bindHashesToShaLinks = function () {
     .on('click', function () { timeline.goToCommit($(this).data("sha")) });
 }
 
+timeline.zoom = function () {
+  var scaleFactor = 0.5; // parseFloat($(this).attr("scale-factor"));
+  var scaleFactorAsString = "scale(" + scaleFactor + ")";
+  var fontScale = (100/scaleFactor);
+
+  var tableTransforms = {"-webkit-transform":   scaleFactorAsString,
+                         "-ms-transform":       scaleFactorAsString,
+                         "-moz-transform":      scaleFactorAsString,
+                         "-o-transform-origin": scaleFactorAsString};
+
+  var metaDataTransforms = {"font-size": (fontScale + '%')};
+
+  $('table').css(tableTransforms);
+  $('.snapshotMetadata').css(metaDataTransforms);
+}
+
 $(".toggleable").on('click', timeline.toggleBtn);
 $("#shaForm").on('submit', function () {return(false)});
 $("#goToSha").on('click', timeline.navigateToRevisionFromSearch);

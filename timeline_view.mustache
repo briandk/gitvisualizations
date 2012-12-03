@@ -11,10 +11,14 @@
     <tr>
       {{#snapshots}}
         <td id="{{revision}}">
-          <div class="timestamp">
-            <time>{{timestamp}}</time>
-          </div id="sha">
-            <code><a class="shaLink" href="#">{{{shortHash}}}</a></code>
+          <div class="snapshotMetadata">
+            <div class="timestamp">
+              <time>{{timestamp}}</time>
+            </div>
+            <div id="sha">
+              <code><a class="shaLink" href="#">{{{shortHash}}}</a></code>
+            </div>
+          </div>
           <div class="codesnapshot">
             <pre class="language-clike" data-line="{{changedLines}}"><code>{{code}}</code>
           </div>

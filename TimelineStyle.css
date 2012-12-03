@@ -45,3 +45,23 @@ code.xray > span {
   margin-bottom: 0% !important;
   margin-top: 1.5% !important;
 }
+
+/* Zooming */
+table {
+  -webkit-transform-origin: top left;
+  -ms-transform-origin: top left;
+  -moz-transform-origin: top left;
+  -o-transform-origin: top left;
+}
+
+table {
+  -webkit-transition: -webkit-transform 2s ease-in-out;
+  -moz-transition: -moz-transform       2s ease-in-out;
+  -o-transition: -o-transform           2s ease-in-out;
+}
+
+.snapshotMetadata {
+  -webkit-transition: font-size 2s ease-in-out;
+  -moz-transition: font-size    2s ease-in-out;
+  -o-transition: font-size      2s ease-in-out;
+}
