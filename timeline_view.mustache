@@ -33,7 +33,14 @@
       <ul class="nav">
         <li class="divider-vertical"></li>
         <li class="inactive toggleable" id="xrayToggle"><a href="#">X-Ray Mode</a></li>
-        <li class="inactive toggleable" id="zoomToggle"><a href="#">Zoom</a></li>
+        <li class="dropdown" id="zoomDropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Zoom<b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li class="nav-header">Zoom-out Level</li>
+            <li id="zoom1x" data-zoom="1" class="disabled"><a href="#">1X</a></li>
+            <li id="zoom2x" data-zoom="2"><a href="#">2X</a></li>
+            <li id="zoom4x" data-zoom="4"><a href="#">4X</a></li>
+          </ul></li>
         <li class="divider-vertical"></li>
         <li>
           <ul class="pager">
