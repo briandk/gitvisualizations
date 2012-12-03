@@ -59,7 +59,14 @@ timeline.bindHashesToShaLinks = function () {
 }
 
 timeline.zoom = function () {
-  var scaleFactor = 0.5; // parseFloat($(this).attr("scale-factor"));
+  // To zoom
+    // get the scale factor
+    // get the left-offset of the currently displayed commit
+    // set the transform-origin of the table to be the left offset
+    // transform the table
+    // change the metadata font size
+
+  var scaleFactor = parseFloat($(this).attr("data-zoom"));
   var scaleFactorAsString = "scale(" + scaleFactor + ")";
   var fontScale = (100/scaleFactor);
 
