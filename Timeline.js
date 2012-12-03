@@ -50,13 +50,13 @@ timeline.navigateToCommitFromPager = function() {
     var sha = timeline.revisions[timeline.shaCounter + counterIncrement];
     timeline.goToCommit(sha);
   }
-}
+};
 
 timeline.bindHashesToShaLinks = function () {
   $('.shaLink')
     .each(function (i) { $(this).data("sha", timeline.revisions[i]) })
     .on('click', function () { timeline.goToCommit($(this).data("sha")) });
-}
+};
 
 timeline.zoom = function () {
   // To zoom
@@ -79,6 +79,15 @@ timeline.zoom = function () {
 
   $('table').css(tableTransforms);
   $('.snapshotMetadata').css(metaDataTransforms);
+};
+
+timeline.getOriginForTransform = function(selection) {
+  var leftOffset = $(selection).offset().left + "px";
+  var properties = {"-webkit-transform-origin": "top " + leftOffset,
+                    "-ms-transform-origin":     "top " + leftOffset,
+                    "-moz-transform-origin":    "top " + leftOffset,
+                    "-o-transform-origin":      "top " + leftOffset};
+  return properties
 }
 
 $(".toggleable").on('click', timeline.toggleBtn);
