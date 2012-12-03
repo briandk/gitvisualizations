@@ -5,6 +5,7 @@ var timeline = {};
 timeline.revisions = revisions;
 timeline.scrollSpeed = 400;
 timeline.shaCounter = 0;
+timeline.currentSha = ""
 timeline.shortShaLength = 8
 timeline.toggleBtn = function () { $(this).toggleClass("active") };
 timeline.goToCommit = function(sha) {
@@ -20,6 +21,7 @@ timeline.navigateToRevisionFromSearch = function () {
 
 timeline.update = function(sha) {
   timeline.shaCounter = timeline.revisions.indexOf(sha);
+  timeline.currentSha = sha;
   shortSha = sha.slice(0, timeline.shortShaLength);
   $('#shaDisplay').html(shortSha);
   timeline.updatePagerButtons();
@@ -49,11 +51,6 @@ timeline.navigateToPreviousCommit = function () {
 
 timeline.navigateToNextCommit = function () {
   var sha = timeline.revisions[(timeline.shaCounter + 1)];
-  timeline.goToCommit(sha);
-};
-
-timeline.navigateToPreviousCommit = function () {
-  var sha = timeline.revisions[(timeline.shaCounter - 1)];
   timeline.goToCommit(sha);
 };
 
