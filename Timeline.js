@@ -5,8 +5,9 @@ var timeline = {};
 timeline.revisions = revisions;
 timeline.scrollSpeed = 300;
 timeline.shaCounter = 0;
-timeline.currentSha = ""
-timeline.shortShaLength = 8
+timeline.currentSha = "";
+timeline.zoomLevel = 1;
+timeline.shortShaLength = 8;
 timeline.toggleBtn = function () { $(this).toggleClass("active") };
 timeline.goToCommit = function(sha) {
   var destinationOffset = $('#' + sha).offset().left;
@@ -61,17 +62,8 @@ timeline.bindHashesToShaLinks = function () {
 };
 
 timeline.zoom = function () {
-  // To zoom
-    // get the zoom menu item's scale factor
-    // get the left-offset of the currently displayed commit
-    // set the transform-origin of the table to be the left offset
-    // transform the table
-      // get table transforms
-      // apply table transforms
-    // change the metadata font size
-
   var scaleFactor = 1 / parseFloat($(this).attr("data-zoom"));
-  var destinationOffset = scaleFactor * $('#' + timeline.currentSha).offset().left
+  var destinationOffset = scaleFactor * $('#' + timeline.currentSha).offset().left;
   var scaleAsString = "scale(" + scaleFactor + ")";
   var fontScale = (100/scaleFactor);
   var leftOffset = $('#' + timeline.currentSha).offset().left;
@@ -81,6 +73,8 @@ timeline.zoom = function () {
   $("body").animate({scrollLeft: destinationOffset}, 500);
   setTimeout(function () { $('.snapshotMetadata').css("font-size", fontScale + '%') }, 501);
   setTimeout(function () {timeline.goToCommit(timeline.currentSha)}, 645);
+  $('.zoomLevel').removeClass("disabled");
+  $(this).addClass("disabled");
 };
 
 timeline.getTransform = function(property, value) {
