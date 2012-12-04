@@ -45,14 +45,17 @@
         <li>
           <div class="pagination" id="pager">
             <ul>
+              <li id="first-commit-btn"
+                  class="pager-btn page-backward">
+                  <a href="#">&laquo;</a></li>
               <li id="prev-commit-btn"
-                  class="pager-btn"
+                  class="pager-btn page-backward"
                   data-counter-increment="-1">
                   <a href="#">&larr;</a></li>
               <li class="pager-btn disabled">
                 <a href="#"><code id="shaDisplay">shaDisplay</code></a></li>
               <li id="next-commit-btn"
-                  class="pager-btn"
+                  class="pager-btn page-forward"
                   data-counter-increment="+1">
                   <a href="#">&rarr;</a></li>
             </ul>
