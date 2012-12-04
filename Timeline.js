@@ -68,36 +68,39 @@ timeline.zoom = function () {
       // apply table transforms
     // change the metadata font size
 
-  var scaleFactor = parseFloat($(this).attr("data-zoom"));
-  var scaleFactorAsString = "scale(" + scaleFactor + ")";
-  var fontScale = (100/scaleFactor);
-  var metaDataTransforms = {"font-size": (fontScale + '%')};
-
-  $('table').css(tableTransforms);
-  $('.snapshotMetadata').css(metaDataTransforms);
-};
-
-timeline.getOriginForTransform = function(selection) {
-  var leftOffset = $(selection).offset().left + "px";
-  var properties = {"-webkit-transform-origin": "top " + leftOffset,
-                    "-ms-transform-origin":     "top " + leftOffset,
-                    "-moz-transform-origin":    "top " + leftOffset,
-                    "-o-transform-origin":      "top " + leftOffset};
-  return properties
-};
-
-timeline.getScaleTransforms = function(scaleFactor) {
+  var scaleFactor = 1 / parseFloat($(this).attr("data-zoom"));
   var scaleAsString = "scale(" + scaleFactor + ")";
-  var properties = {"-webkit-transform": scaleAsString,
-                    "-ms-transform":     scaleAsString,
-                    "-moz-transform":    scaleAsString,
-                    "-o-transform":      scaleAsString};
-  return properties
-}
+  var fontScale = (100/scaleFactor);
+  var leftOffset = $('#' + timeline.currentSha).offset().left;
+  var originX = timeline.getTransform("-origin-x", leftOffset + "px");
+  var originY = timeline.getTransform("-origin-y", "top");
+  var scale = timeline.getTransform("", "scale(" + scaleFactor + ")");
+  console.log(scale, originX, originY);
+  var scaleTableAndCompensateFontSize = function () {
+    $('table').css(originX).css(originY).css(scale);
+    $('.snapshotMetadata').css({"font-size": (fontScale + '%')});
+  };
+
+  timeline.goToCommit(timeline.currentSha);
+  setTimeout(scaleTableAndCompensateFontSize, 1000);
+
+};
+
+timeline.getTransform = function(property, value) {
+  var propertiesMap = {};
+  propertiesMap["-webkit-transform" + property] = value;
+  propertiesMap["-ms-transform" + property] = value;
+  propertiesMap["-moz-transform" + property] = value;
+  propertiesMap["-o-transform" + property] = value;
+
+  return propertiesMap;
+};
+
 
 $(".toggleable").on('click', timeline.toggleBtn);
 $("#shaForm").on('submit', function () {return(false)});
 $("#goToSha").on('click', timeline.navigateToRevisionFromSearch);
 $('.pager-btn').on('click', timeline.navigateToCommitFromPager);
+$('.zoomLevel').on('click', timeline.zoom);
 timeline.bindHashesToShaLinks();
 timeline.update(timeline.revisions[0]);
