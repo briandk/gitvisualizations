@@ -3,13 +3,17 @@ $('#shaSearch').typeahead( {source: revisions} );
 
 var timeline = {};
 timeline.revisions = revisions;
-timeline.scrollSpeed = 400;
+timeline.scrollSpeed = 300;
 timeline.shaCounter = 0;
-timeline.shortShaLength = 8
+timeline.currentSha = "";
+timeline.zoomLevel = 1;
+timeline.shortShaLength = 8;
 timeline.toggleBtn = function () { $(this).toggleClass("active") };
 timeline.goToCommit = function(sha) {
   var destinationOffset = $('#' + sha).offset().left;
-  $("body").animate({scrollLeft: destinationOffset}, timeline.scrollSpeed);
+  if (parseInt($('body').scrollLeft()) != parseInt(destinationOffset)) {
+    $("body").animate({scrollLeft: destinationOffset}, timeline.scrollSpeed);
+  }
   timeline.update(sha);
 };
 timeline.navigateToRevisionFromSearch = function () {
@@ -20,6 +24,7 @@ timeline.navigateToRevisionFromSearch = function () {
 
 timeline.update = function(sha) {
   timeline.shaCounter = timeline.revisions.indexOf(sha);
+  timeline.currentSha = sha;
   shortSha = sha.slice(0, timeline.shortShaLength);
   $('#shaDisplay').html(shortSha);
   timeline.updatePagerButtons();
@@ -42,31 +47,51 @@ timeline.updatePagerButtons = function () {
   }
 };
 
-timeline.navigateToPreviousCommit = function () {
-  var sha = timeline.revisions[(timeline.shaCounter - 1)];
-  timeline.goToCommit(sha);
-}
-
-timeline.navigateToNextCommit = function () {
-  var sha = timeline.revisions[(timeline.shaCounter + 1)];
-  timeline.goToCommit(sha);
-};
-
-timeline.navigateToPreviousCommit = function () {
-  var sha = timeline.revisions[(timeline.shaCounter - 1)];
-  timeline.goToCommit(sha);
+timeline.navigateToCommitFromPager = function() {
+  if (!$(this).hasClass("disabled")) {
+    var counterIncrement = parseFloat($(this).attr('data-counter-increment'));
+    var sha = timeline.revisions[timeline.shaCounter + counterIncrement];
+    timeline.goToCommit(sha);
+  }
 };
 
 timeline.bindHashesToShaLinks = function () {
   $('.shaLink')
     .each(function (i) { $(this).data("sha", timeline.revisions[i]) })
     .on('click', function () { timeline.goToCommit($(this).data("sha")) });
-}
+};
+
+timeline.zoom = function () {
+  var scaleFactor = 1 / parseFloat($(this).attr("data-zoom"));
+  var destinationOffset = scaleFactor * $('#' + timeline.currentSha).offset().left;
+  var scaleAsString = "scale(" + scaleFactor + ")";
+  var fontScale = (100/scaleFactor);
+  var leftOffset = $('#' + timeline.currentSha).offset().left;
+  var scale = timeline.getTransform("", "scale(" + scaleFactor + ")");
+
+  $('table').css(scale);
+  $("body").animate({scrollLeft: destinationOffset}, 500);
+  setTimeout(function () { $('.snapshotMetadata').css("font-size", fontScale + '%') }, 501);
+  setTimeout(function () {timeline.goToCommit(timeline.currentSha)}, 645);
+  $('.zoomLevel').removeClass("disabled");
+  $(this).addClass("disabled");
+};
+
+timeline.getTransform = function(property, value) {
+  var propertiesMap = {};
+  propertiesMap["-webkit-transform" + property] = value;
+  propertiesMap["-ms-transform" + property] = value;
+  propertiesMap["-moz-transform" + property] = value;
+  propertiesMap["-o-transform" + property] = value;
+
+  return propertiesMap;
+};
+
 
 $(".toggleable").on('click', timeline.toggleBtn);
 $("#shaForm").on('submit', function () {return(false)});
 $("#goToSha").on('click', timeline.navigateToRevisionFromSearch);
-$('#next-commit-btn').on('click', timeline.navigateToNextCommit);
-$('#prev-commit-btn').on('click', timeline.navigateToPreviousCommit);
+$('.pager-btn').on('click', timeline.navigateToCommitFromPager);
+$('.zoomLevel').on('click', timeline.zoom);
 timeline.bindHashesToShaLinks();
 timeline.update(timeline.revisions[0]);
