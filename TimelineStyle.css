@@ -11,11 +11,15 @@ td {
 }
 
 .codesnapshot {
-  line-height: 1.4em;
+  line-height: 1.5em;
 }
 
 .timestamp {
-  font-size: 100% !important;
+  font-size: 75% !important;
+}
+
+.shaLink {
+  font-size: 75% !important;
 }
 
 /* Changing styles for x-ray mode */
@@ -47,21 +51,20 @@ code.xray > span {
 }
 
 /* Zooming */
+
 table {
+  -webkit-transition: -webkit-transform 0.5s ease-in-out;
+  -moz-transition: -moz-transform       0.5s ease-in-out;
+  -o-transition: -o-transform           0.5s ease-in-out;
+
   -webkit-transform-origin: top left;
   -ms-transform-origin: top left;
   -moz-transform-origin: top left;
   -o-transform-origin: top left;
 }
 
-table {
-  -webkit-transition: -webkit-transform 1s ease-in-out;
-  -moz-transition: -moz-transform       1s ease-in-out;
-  -o-transition: -o-transform           1s ease-in-out;
-}
-
 .snapshotMetadata {
-  -webkit-transition: font-size 1s ease-in-out;
-  -moz-transition: font-size    1s ease-in-out;
-  -o-transition: font-size      1s ease-in-out;
+  -webkit-transition: font-size 0.1s ease-in-out;
+  -moz-transition: font-size    0.1s ease-in-out;
+  -o-transition: font-size      0.1s ease-in-out;
 }

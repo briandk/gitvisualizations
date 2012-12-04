@@ -3,14 +3,16 @@ $('#shaSearch').typeahead( {source: revisions} );
 
 var timeline = {};
 timeline.revisions = revisions;
-timeline.scrollSpeed = 400;
+timeline.scrollSpeed = 300;
 timeline.shaCounter = 0;
 timeline.currentSha = ""
 timeline.shortShaLength = 8
 timeline.toggleBtn = function () { $(this).toggleClass("active") };
 timeline.goToCommit = function(sha) {
   var destinationOffset = $('#' + sha).offset().left;
-  $("body").animate({scrollLeft: destinationOffset}, timeline.scrollSpeed);
+  if (parseInt($('body').scrollLeft()) != parseInt(destinationOffset)) {
+    $("body").animate({scrollLeft: destinationOffset}, timeline.scrollSpeed);
+  }
   timeline.update(sha);
 };
 timeline.navigateToRevisionFromSearch = function () {
@@ -69,24 +71,16 @@ timeline.zoom = function () {
     // change the metadata font size
 
   var scaleFactor = 1 / parseFloat($(this).attr("data-zoom"));
+  var destinationOffset = scaleFactor * $('#' + timeline.currentSha).offset().left
   var scaleAsString = "scale(" + scaleFactor + ")";
   var fontScale = (100/scaleFactor);
   var leftOffset = $('#' + timeline.currentSha).offset().left;
-  var originX = timeline.getTransform("-origin-x", leftOffset + "px");
-  var originY = timeline.getTransform("-origin-y", "top");
   var scale = timeline.getTransform("", "scale(" + scaleFactor + ")");
-  console.log(scale, originX, originY);
-  var scaleTableAndCompensateFontSize = function () {
-    $('table').css(originX).css(originY).css(scale);
-    $('.snapshotMetadata').css({"font-size": (fontScale + '%')});
-  };
-  if (parseInt($('body').scrollLeft()) != parseInt(leftOffset)) {
-    timeline.goToCommit(timeline.currentSha);
-    setTimeout(scaleTableAndCompensateFontSize, 1000);
-  } else {
-    scaleTableAndCompensateFontSize();
-  }
 
+  $('table').css(scale);
+  $("body").animate({scrollLeft: destinationOffset}, 500);
+  setTimeout(function () { $('.snapshotMetadata').css("font-size", fontScale + '%') }, 501);
+  setTimeout(function () {timeline.goToCommit(timeline.currentSha)}, 645);
 };
 
 timeline.getTransform = function(property, value) {
