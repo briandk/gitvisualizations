@@ -80,9 +80,12 @@ timeline.zoom = function () {
     $('table').css(originX).css(originY).css(scale);
     $('.snapshotMetadata').css({"font-size": (fontScale + '%')});
   };
-
-  timeline.goToCommit(timeline.currentSha);
-  setTimeout(scaleTableAndCompensateFontSize, 1000);
+  if (parseInt($('body').scrollLeft()) != parseInt(leftOffset)) {
+    timeline.goToCommit(timeline.currentSha);
+    setTimeout(scaleTableAndCompensateFontSize, 1000);
+  } else {
+    scaleTableAndCompensateFontSize();
+  }
 
 };
 
