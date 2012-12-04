@@ -45,9 +45,9 @@ code.xray > span {
   padding-top: 50px;
 }
 
-.pager {
-  margin-bottom: 0% !important;
-  margin-top: 1.5% !important;
+#pager {
+  margin-bottom: 1.5% !important;
+  margin-top: 3% !important;
 }
 
 /* Zooming */
