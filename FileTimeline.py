@@ -88,6 +88,7 @@ class GitTimeline(object):
     def __init__(self, inputFile):
         self.repo = Repo(inputFile)
         self.fileRevisions = self.repo.git.log('--reverse', inputFile, format='%H').splitlines()
+        self.timestamps = self.repo.git.log('--reverse', inputFile, date='local', format='%ad')
         self.blames = [self.repo.git.blame(revision, '--root', '--show-number', '--show-name', '-s', inputFile)
                           for revision in self.fileRevisions]
         self.snapshots = [self.composeSnapshot(blame, revision) for (blame, revision) in zip(self.blames, self.fileRevisions)]
