@@ -66,7 +66,6 @@ timeline.bindHashesToShaLinks = function () {
 timeline.zoom = function () {
   var scaleFactor = 1 / parseFloat($(this).attr("data-zoom"));
   var destinationOffset = scaleFactor * $('#' + timeline.currentSha).offset().left;
-  var scaleAsString = "scale(" + scaleFactor + ")";
   var fontScale = (100/scaleFactor);
   var leftOffset = $('#' + timeline.currentSha).offset().left;
   var scale = timeline.getTransform("", "scale(" + scaleFactor + ")");
