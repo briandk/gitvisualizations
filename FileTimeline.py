@@ -88,13 +88,14 @@ class GitTimeline(object):
     def __init__(self, inputFile):
         self.repo = Repo(inputFile)
         self.fileRevisions = self.repo.git.log('--reverse', inputFile, format='%H').splitlines()
+        self.timestamps = self.repo.git.log('--reverse', inputFile, date='local', format='%ad').splitlines()
         self.blames = [self.repo.git.blame(revision, '--root', '--show-number', '--show-name', '-s', inputFile)
                           for revision in self.fileRevisions]
-        self.snapshots = [self.composeSnapshot(blame, revision) for (blame, revision) in zip(self.blames, self.fileRevisions)]
+        self.snapshots = [self.composeSnapshot(index, revision, timestamp)
+                              for (index, revision, timestamp) in zip(self.blames, self.fileRevisions, self.timestamps)]
 
-    def composeSnapshot(self, blame, revision):
+    def composeSnapshot(self, blame, revision, timestamp):
         blamelets = [self.parseBlameLine(line, revision) for line in blame.splitlines()]
-        timestamp = time.strftime("%a, %d %b %Y %H:%M:%S", time.gmtime(self.repo.commit(revision).committed_date))
         return {'blamelets': blamelets,
                 'code': '\n'.join([blamelet['code'] for blamelet in blamelets]),
                 'changedLines': ','.join([blamelet['newLineNumber'] for blamelet in blamelets if blamelet['isChanged']]),
