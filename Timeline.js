@@ -31,8 +31,8 @@ timeline.update = function(sha) {
 };
 
 timeline.updatePagerButtons = function () {
-  var prevCommit = $('#prev-commit-btn');
-  var nextCommit = $('#next-commit-btn');
+  var prevCommit = $('.page-backward');
+  var nextCommit = $('.page-forward');
 
   if (this.shaCounter == 0) {
     prevCommit.addClass("disabled");
@@ -47,7 +47,7 @@ timeline.updatePagerButtons = function () {
   }
 };
 
-timeline.navigateToCommitFromPager = function() {
+timeline.navigateToCommitFromPager = function () {
   if (!$(this).hasClass("disabled")) {
     var counterIncrement = parseFloat($(this).attr('data-counter-increment'));
     var sha = timeline.revisions[timeline.shaCounter + counterIncrement];
@@ -55,16 +55,17 @@ timeline.navigateToCommitFromPager = function() {
   }
 };
 
+
 timeline.bindHashesToShaLinks = function () {
-  $('.shaLink')
-    .each(function (i) { $(this).data("sha", timeline.revisions[i]) })
-    .on('click', function () { timeline.goToCommit($(this).data("sha")) });
+  $('.shaLink').each(function (i) { $(this).data("sha", timeline.revisions[i]) });
+  $('#first-commit-btn').data("sha", timeline.revisions[0]);
+  $('#last-commit-btn').data("sha", timeline.revisions[timeline.revisions.length - 1]);
+  $('.shaLink, #first-commit-btn, #last-commit-btn').on('click', function () { timeline.goToCommit($(this).data("sha")) });
 };
 
 timeline.zoom = function () {
   var scaleFactor = 1 / parseFloat($(this).attr("data-zoom"));
   var destinationOffset = scaleFactor * $('#' + timeline.currentSha).offset().left;
-  var scaleAsString = "scale(" + scaleFactor + ")";
   var fontScale = (100/scaleFactor);
   var leftOffset = $('#' + timeline.currentSha).offset().left;
   var scale = timeline.getTransform("", "scale(" + scaleFactor + ")");
@@ -91,7 +92,8 @@ timeline.getTransform = function(property, value) {
 $(".toggleable").on('click', timeline.toggleBtn);
 $("#shaForm").on('submit', function () {return(false)});
 $("#goToSha").on('click', timeline.navigateToRevisionFromSearch);
-$('.pager-btn').on('click', timeline.navigateToCommitFromPager);
+$('#next-commit-btn').on('click', timeline.navigateToCommitFromPager);
+$('#prev-commit-btn').on('click', timeline.navigateToCommitFromPager);
 $('.zoomLevel').on('click', timeline.zoom);
 timeline.bindHashesToShaLinks();
 timeline.update(timeline.revisions[0]);
