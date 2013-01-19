@@ -11,3 +11,7 @@ Thumbs.db
 
 # Python Bytecode/Outputs #
 *.py[cod]
+
+# R files
+.Rhistory
+.Rdata
