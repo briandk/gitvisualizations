@@ -57,6 +57,11 @@ class FileHandler(object):
             os.makedirs(path)
 
     def copyExternalFiles(self):
+        # filenames = os.listdir(path_to_files)
+        # [{"code": with open(filename) as f:
+        #             f.read()}
+        #     for filename in filenames]
+
         for filename in self.externalFiles:
             source = os.path.join(self.externalFileDirectory, filename)
             destination = os.path.join(self.outputDirectory, filename)
