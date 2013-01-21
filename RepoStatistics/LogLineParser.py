@@ -1,4 +1,3 @@
-# global variables (for now)
 def parse_log_lines(logfile):
     datetime_indicator = ' '
     blank_line_indicator = '\n'
