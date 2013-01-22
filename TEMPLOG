@@ -1,0 +1,446 @@
+ 4f14d5777e9d0316780d8ab1ba2e83a7d92b20bc,2013-01-21 19:54:40 -0500
+
+9	0	RepoStatistics/RepoStatistics.sh
+ 611ccce4cc64caf18d43f9c3f97a9351ae356b9a,2013-01-21 17:57:09 -0500
+
+0	1	RepoStatistics/LogLineParser.py
+ 6d1a0208ce4c2a538bbe35648ef1b0a44963d307,2013-01-21 17:42:00 -0500
+
+25	0	RepoStatistics/LogLineParser.py
+0	25	tests/LogLineParser.py
+ d78f9c8f03d5ea03ccbd0f4e7ee407d00a7e220d,2013-01-21 17:40:34 -0500
+
+20	20	tests/LogLineParser.py
+ d89ab8f985b33abb8fe00cfdfbec72b2873dcf2d,2013-01-21 17:30:28 -0500
+
+4	10	tests/LogLineParser.py
+ 7bc9bd3920d9880b2e0f93a1d63ca013e9a4bf24,2013-01-21 17:26:14 -0500
+
+31	8	tests/LogLineParser.py
+ f8e003f22d39236540e18eb8560266f4e5a32718,2013-01-21 15:14:29 -0500
+
+8	0	tests/LogLineParser.py
+48	0	tests/loglines.txt
+ 7cc1c1ebe80f5b15fe1b59e6560b64fe6eacc3fe,2013-01-19 22:30:12 -0500
+
+134	0	CodeTimeline/CodeTimeline.py
+0	139	CodeTimeline/FileTimeline.py
+ 72f07c5dc66cf95f024f8a5a0c2b6c17a947dcde,2013-01-19 22:24:50 -0500
+
+5	0	CodeTimeline/FileTimeline.py
+ 85c85eceb78006a6e540fcaad994234396241d99,2013-01-19 16:02:39 -0500
+
+134	0	CodeTimeline/FileTimeline.py
+99	0	CodeTimeline/externalFiles/Timeline.js
+70	0	CodeTimeline/externalFiles/TimelineStyle.css
+5958	0	CodeTimeline/externalFiles/bootstrap.css
+7	0	CodeTimeline/externalFiles/bootstrap.min.js
+2	0	CodeTimeline/externalFiles/jQuery.js
+147	0	CodeTimeline/externalFiles/prism.css
+11	0	CodeTimeline/externalFiles/prism.js
+91	0	CodeTimeline/timeline_view.mustache
+0	133	FileTimeline.py
+0	99	Timeline.js
+0	70	TimelineStyle.css
+0	5958	bootstrap.css
+0	7	bootstrap.min.js
+0	2	jQuery.js
+0	147	prism.css
+0	11	prism.js
+0	91	timeline_view.mustache
+ 0ca81d74338ba17a8b3fe044917db50e1f207d99,2013-01-19 15:51:11 -0500
+
+4	0	.gitignore
+16	0	RScripts/CommitsPerDay.R
+119	0	RScripts/timeSeriesData.csv
+ 13ba8699082cd52bab96cbeec9967bda44f67941,2013-01-13 12:50:15 -0800
+ b7d8844941bcfecaffe39c8c216e53a54992d57b,2013-01-13 12:43:29 -0800
+ 11c7aa67ecb3e113abb2d907e736e0077fd39d50,2013-01-13 15:35:01 -0500
+
+4	4	FileTimeline.py
+ 31884c576f33d5bcc821153fc9ef81f8a3fd38e4,2013-01-10 17:46:11 -0500
+
+1	0	FileTimeline.py
+ 2929b1051441f932eb4ed8d8850dbf004868c798,2013-01-10 17:12:27 -0500
+
+0	1	Timeline.js
+ 57f4d2d332470aea3c672c4ae5ca98f238b3b7c0,2012-12-04 01:40:27 -0500
+
+3	0	timeline_view.mustache
+ 30c15720f300e78456d9fff4d37bb42dd779e95c,2012-12-04 01:35:47 -0500
+
+10	7	Timeline.js
+5	2	timeline_view.mustache
+ 7e1ebe352ec67f7f9abbe7545b7a77d7d125b397,2012-12-04 01:15:32 -0500
+
+3	3	TimelineStyle.css
+14	12	timeline_view.mustache
+ 56678e88ce5400407207a7c7ef7a14fede5e087f,2012-12-03 21:56:50 -0800
+ 7047e3523f5ecc3e2383556c2c929d37ca7a2c2f,2012-12-04 00:48:06 -0500
+
+6	12	Timeline.js
+ 2c22b545661fd2399a7ba0b2035b3825c8ce05c9,2012-12-04 00:35:34 -0500
+
+9	15	Timeline.js
+14	11	TimelineStyle.css
+ 4cb01aa4d3c552297d48617577da0036d9441c47,2012-12-03 20:31:31 -0500
+
+6	3	Timeline.js
+ 67e81e92c752c2a77174daad7cfcec4aed95b125,2012-12-03 19:39:27 -0500
+
+23	20	Timeline.js
+3	3	timeline_view.mustache
+ 16085f198984e61afe782692800dc1111b0e27c9,2012-12-03 18:28:10 -0500
+
+12	7	Timeline.js
+ 6704b28e66a4d6bbed6ccda885fec458b40bcbf2,2012-12-03 17:53:43 -0500
+
+11	2	Timeline.js
+ 3a2d5aa2ba2da0a3a9c1efc6bcdb0fd410de7b86,2012-12-03 17:38:27 -0500
+
+8	1	Timeline.js
+ fce6239885888aa8a4b26d26b18bc5ccbd441081,2012-12-03 17:34:28 -0500
+
+8	1	timeline_view.mustache
+ 78f0e336b678cd69c8204e4db188e3d6eccfd6cd,2012-12-03 16:45:09 -0500
+
+6	6	TimelineStyle.css
+ d79c076d9087a25fc7b212b897695c5b877f19f4,2012-12-03 16:32:05 -0500
+
+7	10	Timeline.js
+8	2	timeline_view.mustache
+ 1ec651fc9abd1ae19ba9b0f1e8dc2e8d68c4156b,2012-12-03 16:06:07 -0500
+
+2	5	Timeline.js
+ fa2b9de98a30e051a555dad6574cc57e8a6e214b,2012-12-03 12:22:25 -0500
+
+16	0	Timeline.js
+20	0	TimelineStyle.css
+8	4	timeline_view.mustache
+ 5d289f8358d188dbf84558134a9b935af108a087,2012-12-02 16:02:26 -0800
+ 26c05e022a2596c9f67ed5e3a8a093c791439d1c,2012-12-02 19:00:16 -0500
+
+1	1	README.md
+ 043af160087a315e6fa2bf41b7eb1828c4ab65f5,2012-12-02 18:58:35 -0500
+
+64	0	README.md
+ 54866a66a97adef53a32ee2dcdcc8828eb07c762,2012-12-02 15:50:32 -0800
+ b4cee971734b8f268fe109da06c48fa3b98f19ea,2012-12-02 14:50:47 -0500
+
+5	0	requirements.txt
+ 918c4b1c75fd34d87fab3f6c49636e5364eaad7e,2012-12-02 11:40:32 -0800
+ 422a69743d1d2acc901ace1a0959faaf5284e5ac,2012-11-30 13:29:15 -0500
+
+3	6	Timeline.js
+ d4cf797cd7efe14308afff52be68f1f368575ffe,2012-11-30 12:40:55 -0500
+
+10	0	Timeline.js
+1	1	timeline_view.mustache
+ af24657664a04e04985c9273deac2661904f13b7,2012-11-30 01:46:09 -0500
+
+6	0	Timeline.js
+ d80ed5b2eceea5f3bd066153f32da63a98a878f2,2012-11-30 01:40:46 -0500
+
+16	5	Timeline.js
+ bde119600abd1b0a35d4b17ac51e83c10a445e4f,2012-11-30 01:05:48 -0500
+
+7	6	Timeline.js
+ c3a13d4e543c412d818022984d757dbfdf8ad6a8,2012-11-30 01:02:47 -0500
+
+18	0	Timeline.js
+3	3	timeline_view.mustache
+ caf423b5a0ce8502d6a3fa4a28ccc2ab879930a9,2012-11-30 00:45:37 -0500
+
+8	1	Timeline.js
+ da11885c134c42c5a0cb91a8c0e8da4c49a823dd,2012-11-30 00:34:42 -0500
+
+3	1	Timeline.js
+2	2	TimelineStyle.css
+2	0	timeline_view.mustache
+ fb51720bf2b3fc7e5ce8638d9974f111a68fb013,2012-11-30 00:04:06 -0500
+
+5	0	TimelineStyle.css
+7	0	timeline_view.mustache
+ 656c22ac1509391a04518f3028d9056146704b61,2012-11-29 23:41:39 -0500
+
+1	0	timeline_view.mustache
+ 3670d1ed4863acc21a3f5c82a0bf05116ded6e19,2012-11-29 23:38:34 -0500
+
+2	1	Timeline.js
+ b8a4d51ccc93e543295e35bf5185b81ef41b7fca,2012-11-29 23:27:43 -0500
+
+6	5	Timeline.js
+1	1	timeline_view.mustache
+ 24073e64788831556a936d99379c4bf3226b8594,2012-11-29 22:40:07 -0500
+
+9	2	Timeline.js
+3	1	timeline_view.mustache
+ c28b91ab1d4bd92199caf9eae73d6c5bcce3be29,2012-11-29 21:45:28 -0500
+
+1	0	FileTimeline.py
+2	1	timeline_view.mustache
+ eee81e18a722a381301d2cbc206d3b66878331fe,2012-11-29 21:35:34 -0500
+
+4	1	TimelineStyle.css
+1	1	timeline_view.mustache
+ 8dd8fb2730e733dd26f506032844142b67afcdd7,2012-11-29 20:53:47 -0500
+
+8	3	TimelineStyle.css
+10	4	timeline_view.mustache
+ bb51e79dec2a1233c8ae0804b97731a6304d0c9f,2012-11-29 19:55:25 -0500
+
+6	16	Timeline.js
+2	2	timeline_view.mustache
+ 30db396e2d46bd3a6749b851b1490f9c867c5b1b,2012-11-29 17:47:35 -0500
+
+6	0	TimelineStyle.css
+ 6fbf4e128bc27edf566d1dbed5e8ac63b457003f,2012-11-29 17:32:49 -0500
+
+2	1	FileTimeline.py
+21	0	Timeline.js
+12	13	timeline_view.mustache
+ 91c1867188462f2e93e1985ac371cf739ad53707,2012-11-27 21:56:49 -0500
+
+1	25	FileTimeline.py
+1	1	timeline_view.mustache
+ 8de4857d121d7c7be627bacdf117ae4be885fed8,2012-11-27 18:52:04 -0500
+
+3	1	timeline_view.mustache
+ 3cf51a1b19c571309f71d2cd6d8e6b8685e15c31,2012-11-27 18:27:21 -0500
+
+1	1	FileTimeline.py
+3	0	timeline_view.mustache
+ c859b0db617c1136282628e6c174da78bcb5ba17,2012-11-27 18:24:29 -0500
+
+3	4	FileTimeline.py
+ 63442f815039c9202b42eb51f4eb469be749182c,2012-11-27 18:23:41 -0500
+
+11	4	TimelineStyle.css
+ 2dffcb42747bd9193342c8d63e1eee4242703f46,2012-11-27 18:09:18 -0500
+
+16	19	FileTimeline.py
+1	1	timeline_view.mustache
+ dbeec5191166b037695ea293201d501ad887efbb,2012-11-25 15:53:27 -0500
+
+2	2	FileTimeline.py
+3	2	TimelineStyle.css
+0	46	bootstrap.css
+0	151	prism-dark.css
+0	11	prism-dark.js
+147	0	prism.css
+11	0	prism.js
+ e4eb9ee4a19829011b46fae526be740297924f3b,2012-11-24 12:00:35 -0500
+
+17	92	TimelineStyle.css
+3	1	timeline_view.mustache
+ d2ba07949c1966b6a1a795913da0dba27dc9caa5,2012-11-24 00:49:46 -0500
+
+9	1	timeline_view.mustache
+ fc2adb28c4a6f1e3507ff3ad88bcf95847d38077,2012-11-24 00:30:44 -0500
+
+8	0	timeline_view.mustache
+ 36cd9b5bba0ccbfc8895f67a12e19364342508f7,2012-11-23 20:34:12 -0500
+
+3	1	FileTimeline.py
+6004	0	bootstrap.css
+7	0	bootstrap.min.js
+3	1	timeline_view.mustache
+ acd24ca744b15e35fbab57099619c7201d5a733a,2012-11-23 20:23:20 -0500
+
+2	1	FileTimeline.py
+2	0	jQuery.js
+2	1	timeline_view.mustache
+ ca4fcf988225cfe6857737fc2b08ff44c72d1fde,2012-11-23 20:03:20 -0500
+
+4	5	FileTimeline.py
+1	1	TimelineStyle.css
+151	0	prism-dark.css
+11	0	prism-dark.js
+9	7	timeline_view.mustache
+ 9de7c3f3761791d36b33b5c7b6c777e3b5b1af3c,2012-11-23 14:48:35 -0500
+
+4	3	FileTimeline.py
+ cdc4e8075399efacc558bdc126f73d193b2f32f6,2012-11-19 22:16:54 -0500
+
+11	8	FileTimeline.py
+2	1	timeline_view.mustache
+ 531501c158102aa967b76bf1ead5ffabcbc55971,2012-11-19 21:54:06 -0500
+
+4	1	FileTimeline.py
+1	1	timeline_view.mustache
+ e2e8746cfc7d66cf38f5de9c2b9e7e1d6f06b289,2012-11-19 21:43:07 -0500
+
+14	9	FileTimeline.py
+2	2	timeline_view.mustache
+ 9183a6459b903cad4cfd7abc2128ea1f248d1d70,2012-11-19 21:17:08 -0500
+
+26	26	FileTimeline.py
+19	0	timeline_view.mustache
+ 9027bee0559a00fe1127b7709bc0e31bb3387265,2012-11-19 13:12:07 -0800
+ 79491ef35fd47b2d2f2a0c0d42cea7813e327ef0,2012-11-19 16:10:08 -0500
+
+1	1	FileTimeline.py
+ bfb27874d41dc17c26b40f44f1586581ffd24365,2012-11-19 16:01:26 -0500
+
+3	3	FileTimeline.py
+ 34b84733f589947fee85ba5590798a3596abff3e,2012-11-19 15:37:31 -0500
+
+0	1	FileTimeline.py
+ b1df23e7f3edc456946eaeb7e926ddfb917e53d5,2012-11-19 15:35:10 -0500
+
+4	15	FileTimeline.py
+ 7e1b02f81c611a3f172fb028e933acd362be3da8,2012-11-19 15:17:12 -0500
+
+15	6	FileTimeline.py
+ 8de93e1640813c927ceaeb99079045028928e902,2012-11-18 23:29:46 -0500
+
+21	16	FileTimeline.py
+ fe1517022f30e9c50fd0b74eef063358627614bd,2012-11-18 17:07:03 -0500
+
+31	16	FileTimeline.py
+ 74282a41185bff8e9ee7a295b11c77d08265eca4,2012-11-18 16:02:55 -0500
+
+4	25	FileTimeline.py
+ 02186bcf5b4dbd32dedf1713de9a8abfc887dc06,2012-11-18 15:39:23 -0500
+
+1	10	FileTimeline.py
+ 9a244866c011d5914df0f4370ea61402b00fde0d,2012-11-15 23:10:48 -0500
+
+19	5	FileTimeline.py
+ 6d72850e0f5adb72ab2ee54e127e8fdbd1821ca7,2012-11-15 11:50:28 -0500
+
+4	1	.gitignore
+ fc6350689caf3ba98aa1b03f37c624dd3efb5109,2012-11-14 18:20:01 -0800
+ 8ab00f4aaa8e10fe86d117d0479f4b2c618b20bf,2012-11-14 18:03:32 -0800
+ 8418e4e1bdc7d0593766684fb06637cdf6c8970a,2012-11-14 21:01:29 -0500
+
+16	7	FileTimeline.py
+ 8c3a2ad6655edd3c7e2513eed4dd70887221d5e4,2012-11-11 19:26:52 -0500
+
+2	1	FileTimeline.py
+ ae4e98537faf7d0ccfbb03fb4389b3bbaa35c580,2012-11-11 16:33:09 -0500
+
+1	9	FileTimeline.py
+ b16484756d113af9af7ed10e19bbecb797f9a974,2012-11-11 16:04:47 -0500
+
+8	1	TimelineStyle.css
+ a18a08837967919731139374be5dba3d823b3e6b,2012-11-08 17:39:33 -0500
+
+2	2	FileTimeline.py
+ da2ac4aa1acca2b6b5e31321ea7610bd8d545816,2012-11-08 17:23:34 -0500
+
+14	5	FileTimeline.py
+1	1	TimelineStyle.css
+ c3bf77342218e4c63419c8cfb2f59f2fb347117e,2012-11-08 12:23:36 -0500
+
+20	0	FileTimeline.py
+66	1	TimelineStyle.css
+ e6defb30068b38d387aa9a1e17f24e1bfd394255,2012-11-07 23:41:26 -0500
+
+31	14	FileTimeline.py
+ 4ab81430f91f4a752eafc32bc273db6d11132778,2012-10-31 19:54:05 -0700
+
+5	3	FileTimeline.py
+ d5040ebbdb2765085ba92e5763930eb51575c5a3,2012-10-31 19:03:35 -0700
+
+16	5	FileTimeline.py
+ a320613042aab2bdeddd975d80d63dce7a384c2f,2012-10-31 17:44:09 -0700
+
+1	1	FileTimeline.py
+ c722cbdf8e9d7192477a165f707097fda0f6f7b8,2012-10-31 15:44:02 -0700
+
+7	1	FileTimeline.py
+ 5b68342f1d07626c4d63a7f0154baddcc6948606,2012-10-30 20:35:55 -0700
+
+76	0	FileTimeline.py
+0	76	OutputCommits.py
+ fc5633e9943f09b5161017144c660a959cce6e90,2012-10-30 17:38:02 -0700
+
+23	18	OutputCommits.py
+ f15b2f7ad4af3d6f8cf2e60aa7e6b32df850d2ed,2012-10-30 14:07:17 -0700
+
+4	6	OutputCommits.py
+1	1	TimelineStyle.css
+ 8f8bb36958845c9209bb5519af34f68cee1e8b29,2012-10-30 12:02:00 -0700
+
+11	10	OutputCommits.py
+ bb8346453986db5d027240b265d52e49dc7a2a74,2012-10-30 10:07:26 -0700
+
+1	1	OutputCommits.py
+ ea5b4d983217a479a0ef21521477d24265e17c30,2012-10-30 10:05:19 -0700
+
+3	1	OutputCommits.py
+20	18	TimelineStyle.css
+ 581a852237f9be283f1a8bb62310383d34420a7e,2012-10-30 09:55:15 -0700
+
+5	15	OutputCommits.py
+ 3ea70cda83453c54847a7e426563e1742ead10f8,2012-10-30 09:42:30 -0700
+
+7	5	OutputCommits.py
+ 4ae497f210097132c85dddacb565b66992278815,2012-10-30 09:30:53 -0700
+
+25	22	OutputCommits.py
+ e6639cacc3295e6e00e1b237b397e6279c0e7e39,2012-10-29 23:36:38 -0700
+
+19	19	OutputCommits.py
+ 52ee681b0c7ad575c37a1d8706b28639d41bd856,2012-10-29 23:34:33 -0700
+
+41	42	OutputCommits.py
+ 64a73f16e88af86e94881a626a1c9bfef86840ac,2012-10-29 23:14:54 -0700
+
+3	1	OutputCommits.py
+ 6bced4d9400d00af71bd071a1fe9f9fd8c4a7091,2012-10-29 23:01:47 -0700
+
+4	5	OutputCommits.py
+ 7e2de28d7c62110ed981a773528a52f7fa8d46cd,2012-10-29 22:57:26 -0700
+
+24	4	OutputCommits.py
+ b94ed46193814ea6fc8d313d699dac14aa9c8985,2012-10-29 13:07:29 -0700
+
+13	0	OutputCommits.py
+ 2598387296cc77156546fb2365831913a123434c,2012-10-29 10:53:29 -0700
+
+21	0	TimelineStyle.css
+ 8d2490af0cb64d4366d1cbc99d0c856e86c87d6f,2012-10-29 10:50:00 -0700
+
+42	0	OutputCommits.py
+0	12	analysis-tools/GitTest.sh
+0	42	analysis-tools/OutputCommits.py
+ a17b2bc31cf67e551ba9a8c7cd7cff6e8fb0eff0,2012-10-29 07:20:39 -0700
+
+16	5	analysis-tools/OutputCommits.py
+ d0edcd3a8d0cd30affee99f60e06e074726b5a9a,2012-10-28 13:09:37 -0700
+
+4	2	analysis-tools/OutputCommits.py
+ a108620a84f9bb77ccac47a8fd9ea24ea4fa56b6,2012-10-28 11:47:31 -0700
+
+0	15	analysis-tools/OutputCommits.py
+ c48c86903e4f770ad064b7f731bc17a2e83c1d8a,2012-10-28 08:52:48 -0700
+
+14	0	analysis-tools/OutputCommits.py
+ d0e8342f30f83e7ec0e69e659b6d0d442cad30a8,2012-10-28 08:35:42 -0700
+
+5	0	analysis-tools/OutputCommits.py
+ df4ce38fa28c4f8c42fe398d9b06b4a57b848a21,2012-10-28 08:30:20 -0700
+
+4	3	analysis-tools/OutputCommits.py
+ 78cd05f8c66980629b5ca2705a26e17ec93e9e23,2012-10-28 08:26:02 -0700
+
+1	2	analysis-tools/OutputCommits.py
+ 567039549c20edfe94088625b983f2cfe2d9888a,2012-10-28 07:37:07 -0700
+
+12	0	analysis-tools/GitTest.sh
+10	3	analysis-tools/OutputCommits.py
+ 8b0c9675c8b47de28e4c15d4d72b33d1a03920d9,2012-10-27 16:51:42 -0700
+
+8	5	analysis-tools/OutputCommits.py
+ 110ea6d5eb5fc743cdd76d12c27b48360c25a5de,2012-10-27 12:15:00 -0700
+
+6	3	analysis-tools/OutputCommits.py
+ 96aa67f8be42555b03029b4510d3747cd9687a80,2012-10-27 12:10:56 -0700
+
+12	0	analysis-tools/OutputCommits.py
+ cba6fcfb4fa9c3fce2a71eeeb7177b05bf67341b,2012-10-29 10:30:35 -0700
+
+10	0	.gitignore
+0	0	README.md
