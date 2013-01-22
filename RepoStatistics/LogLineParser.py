@@ -1,3 +1,14 @@
+import argparse
+
+def create_csv():
+    args = parseCommandLineArguments()
+    lines = parse_log_lines(args.repo_path)
+
+def parseCommandLineArguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("repo_path", help="Path to the repo of interest")
+    return parser.parse_args()
+
 def parse_log_lines(logfile):
     datetime_indicator = ' '
     blank_line_indicator = '\n'
@@ -18,7 +29,3 @@ def parse_log_lines(logfile):
             currentLine = f.readline()
         output.append(loglet)
     return output
-
-
-
-
