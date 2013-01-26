@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This software aims to produce a report of statistics and data visualizations derived from a given local git repository. It presents a command-line front-end to the user--implemented in python--and outputs a PDF file of graphics.
+This software aims to produce a report of statistics and data visualizations derived from a given local git repository. It presents a command-line front-end to the user and outputs a PDF file of graphics.
 
 This document outlines the specifications for how different parts of this system relate to one another. 
 
@@ -27,15 +27,50 @@ $ python RepoStatistics.py path/to/repo --since="last year" --until="last month"
 
 ### Git Log File
 
-The git log file is generated in a format that contains:
-
-- A leading space to denote the datestamp line
-- The full 40-character SHA of the commit
-- The ISO-formatted datestamp
+The git log file is generated using the following command:
 
 ```bash
 $ git log --numstat --date=iso --format=' %H,%ad' 
 ```
+
+The output format that contains the following information for each commit:
+
+- A datestamp line
+- One or more diffstat lines
+
+#### The datestamp line
+
+##### Format
+
+```text
+ %40c,%4d-%2d-%2d %2d:%2d:%2d +/-%4d
+```
+
+- A leading space to denote the datestamp line
+- The full 40-character SHA of the commit
+- A comma
+- The ISO-formatted datestamp
+
+##### Example
+
+```
+ 57f4d2d332470aea3c672c4ae5ca98f238b3b7c0,2012-12-04 01:40:27 -0500
+```
+
+
+#### The diffstat line
+
+##### Format
+
+```text
+%d\t%d\t%s
+```
+
+- An integer representing the number of lines added to a file
+- A tab (whitespace)
+- An integer representing the number of lines deleted from a file
+- A tab (whitespace)
+- A path (relative to the root of the repo) identifying the file
 
 #### Sample git log output
 
