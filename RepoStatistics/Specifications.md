@@ -88,6 +88,25 @@ The output format that contains the following information for each commit:
 5       0       CodeTimeline/FileTimeline.py
 ```
 
+### The Loglet Class
+
+As the log output is parsed, it's aggregated into what I've been calling a "loglet." Loglets are a conceptual way I'm using to organize how I chunk the information of the git log output. Roughly speaking, a loglet is a Python object with the following data attributes:
+
+- SHA-1 hash (ex: 6e8c4c26c3046f7df7644ad00231f38e5baef365)
+- Date (ex: 2013-01-25)
+- 24-hour Time (ex: 01:02:47)
+- DateTime (ex: 2013-01-25 01:02:47)
+- GMT Offset (ex: -0500)
+- A list of one or more diffstat objects
+
+### The Diffstat data spec
+
+Each diffstat contains:
+
+- An integer representing the lines added
+- An integer representing the lines deleted
+- A string representing filename by the relative path (relative to the repo root) to the file
+
 ## Output
 
 The program should output a single (multi-page, if necessary) PDF file containing statistical graphics.
