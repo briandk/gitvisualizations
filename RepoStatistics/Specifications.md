@@ -107,6 +107,26 @@ Each diffstat contains:
 - An integer representing the lines deleted
 - A string representing filename by the relative path (relative to the repo root) to the file
 
+### CSV File ###
+
+The CSV file is designed to be processed as input to the R Script. It's intentionally "long" data, which means essentially that any given commit will be represented by multiple observations, one observation per file in the commit.
+
+Each observation will contain values for the following variables:
+
+- SHA hash
+- Date
+- Time
+- DateTime
+- File Path
+- Lines Added
+- Lines Deleted
+
+#### Example CSV Line ####
+
+| sha	 	                             | date	    | time	 | dateTime	         | filePath  | linesAdded | linesDeleted
+|----------------------------------------|----------|--------|-------------------|-----------|------------|-------------
+d80ed5b2eceea5f3bd066153f32da63a98a878f2 |2012-11-30|01:40:46|2012-11-30 01:40:46|Timeline.js|6           |0
+
 ## Output
 
 The program should output a single (multi-page, if necessary) PDF file containing statistical graphics.
