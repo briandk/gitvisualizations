@@ -1,12 +1,18 @@
 import argparse
+import subprocess
 
-def create_csv():
-    args = parseCommandLineArguments()
-    lines = parse_log_lines(args.repo_path)
+def create_git_log_call():
+    command_line_arguments = ["--%s=%s" % (k,v)
+                                  for k,v
+                                  in vars(parseCommandLineArguments()).iteritems()
+                                  if v is not None]
+    print command_line_arguments
 
 def parseCommandLineArguments():
     parser = argparse.ArgumentParser()
     parser.add_argument("repo_path", help="Path to the repo of interest")
+    parser.add_argument("--since", help="the beginning of the time interval of interest")
+    parser.add_argument("--until", help="the endpoint of the time interval of interest")
     return parser.parse_args()
 
 def parse_log_lines(logfile):
@@ -29,3 +35,5 @@ def parse_log_lines(logfile):
             currentLine = f.readline()
         output.append(loglet)
     return output
+
+create_git_log_call()
