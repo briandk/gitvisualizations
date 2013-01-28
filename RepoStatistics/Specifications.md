@@ -127,6 +127,25 @@ Each observation will contain values for the following variables:
 |----------------------------------------|----------|--------|-------------------|-----------|------------|-------------
 d80ed5b2eceea5f3bd066153f32da63a98a878f2 |2012-11-30|01:40:46|2012-11-30 01:40:46|Timeline.js|6           |0
 
+## Invoking R at the command line
+
+R can be invoked from the command line. The call to R should contain the following specifiers:
+
+- A session-type specifier ([`--vanilla`][1], most likely) 
+- An `--args` flag, which is a kind of terminator for the R argument parser. When an R script tries to access arguments and uses the `trailingOnly=TRUE` option, the parser will only capture arguments *AFTER* the `--args` flag in the command line call
+- A CSV input file
+- A PDF output file
+- A redirect to send the R script in
+- A redirect to sink any output messages
+
+### Example R script invocation
+
+```bash
+$ R --vanilla --args inputfile.csv outputfile.pdf < test.R > /dev/null
+```
+
 ## Output
 
 The program should output a single (multi-page, if necessary) PDF file containing statistical graphics.
+
+[1]: http://cran.r-project.org/doc/manuals/R-intro.html#Invoking-R-from-the-command-line
