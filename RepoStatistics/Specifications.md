@@ -92,12 +92,15 @@ The output format that contains the following information for each commit:
 
 As the log output is parsed, it's aggregated into what I've been calling a "loglet." Loglets are a conceptual way I'm using to organize how I chunk the information of the git log output. Roughly speaking, a loglet is a Python object with the following data attributes:
 
-- SHA-1 hash (ex: 6e8c4c26c3046f7df7644ad00231f38e5baef365)
-- Date (ex: 2013-01-25)
-- 24-hour Time (ex: 01:02:47)
-- DateTime (ex: 2013-01-25 01:02:47)
-- GMT Offset (ex: -0500)
-- A list of one or more diffstat objects
+|Data                                  | Object Attribute | Example                                  
+|--------------------------------------|------------------|------------------------------------------
+SHA-1 hash                             | `x.sha`          | `6e8c4c26c3046f7df7644ad00231f38e5baef365` 
+Date                                   | `x.date`         | `2013-01-25`
+24-hour Time                           | `x.time`         | `01:02:47`                              
+DateTime                               | `x.datetime`     | `2013-01-25 01:02:47`
+GMT Offset                             | `x.gmt_offset`   | `-0500`                     
+A list of one or more diffstat objects | `x.diffstats`    | `[...]`                                  
+  
 
 ### The Diffstat data spec
 
@@ -123,9 +126,9 @@ Each observation will contain values for the following variables:
 
 #### Example CSV Line ####
 
-| sha	 	                             | date	    | time	 | dateTime	         | filePath  | linesAdded | linesDeleted
-|----------------------------------------|----------|--------|-------------------|-----------|------------|-------------
-d80ed5b2eceea5f3bd066153f32da63a98a878f2 |2012-11-30|01:40:46|2012-11-30 01:40:46|Timeline.js|6           |0
+| sha	 	 	| date	 	| time	 	| dateTime	 	| filePath 	| linesAdded 	| linesDeleted
+| ----------------------------------------	| ----------	| --------	| -------------------	| -----------	| ------------	| -------------
+d80ed5b2eceea5f3bd066153f32da63a98a878f2 	| 2012-11-30	| 01:40:46	| 2012-11-30 01:40:46	| Timeline.js	| 6 	| 0
 
 ## Invoking R at the command line
 
