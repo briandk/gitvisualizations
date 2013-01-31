@@ -1,6 +1,8 @@
 import argparse
 import subprocess
 
+import Loglet.py
+
 class GitLogCaller(object):
     def __init__(self):
         self.args = self.parseCommandLineArguments()
@@ -27,20 +29,18 @@ class GitLogCaller(object):
     def parse_log_lines(self):
         datetime_indicator = ' '
         blank_line_indicator = '\n'
-        loglet = {"header": '',
-                  "content": []}
+        working_loglet = Loglet()
         output = []
         with open(logfile) as f:
-            currentLine = f.readline()
+            current_line = f.readline()
             while f.readline():
                 if currentLine.startswith(blank_line_indicator):
-                    output.append(loglet)
-                    loglet['header'] = ''
-                    loglet['content'] = []
+                    output.append(working_loglet)
+                    working_loglet = Loglet()
                 elif currentLine.startswith(datetime_indicator):
-                    loglet['header'] = currentLine
+                    working_loglet.add_header(current_line)
                 else:
-                    loglet['content'].append(currentLine)
+                    working_loglet.add_content()
                 currentLine = f.readline()
             output.append(loglet)
         return output
