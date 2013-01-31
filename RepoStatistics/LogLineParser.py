@@ -13,14 +13,12 @@ class GitLogData(object):
         self.git_log_lines = self.get_git_log().splitlines(True)
         loglets = self.parse_log_lines(self.git_log_lines)
 
-
     def get_git_log(self):
         arguments = ['--numstat', '--date=iso', '--format= %H,%ad']
         optional_arguments = self.get_optional_arguments()
         if optional_arguments is not []:
             arguments.extend(optional_arguments)
         repo = git.Repo(self.args.repo_path)
-        print arguments
         return repo.git.log(arguments)
 
     def get_optional_arguments(self):
