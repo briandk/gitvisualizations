@@ -5,26 +5,31 @@ import subprocess
 import git
 
 # Locally-defined modules
-import Loglet
+from Loglet import Loglet
 
 class GitLogData(object):
     def __init__(self):
         self.args = self.parseCommandLineArguments()
-        self.git_loglines = self.get_git_log().splitlines(True)
-        print self.git_loglines[0:4]
+        self.git_log_lines = self.get_git_log().splitlines(True)
+        loglets = self.parse_log_lines(self.git_log_lines)
+
 
     def get_git_log(self):
-        arguments = ["git", "log", "--numstat", "--date=iso", "--format=' %H,%ad'"]
-        arguments = arguments.extend(self.get_optional_arguments())
+        arguments = ['--numstat', '--date=iso', '--format= %H,%ad']
+        optional_arguments = self.get_optional_arguments()
+        if optional_arguments is not []:
+            arguments.extend(optional_arguments)
         repo = git.Repo(self.args.repo_path)
+        print arguments
         return repo.git.log(arguments)
 
     def get_optional_arguments(self):
         optional_flags = ["since", "until"]
-        return ["--%s='%s'" % (k,v)
-                    for k,v
-                    in vars(self.args).iteritems()
-                    if k in optional_flags and v is not None]
+        output =  ["--%s=%s" % (k,v)
+                       for k,v
+                       in vars(self.args).iteritems()
+                       if k in optional_flags and v is not None]
+        return output
 
 
     def parseCommandLineArguments(self):
@@ -34,23 +39,21 @@ class GitLogData(object):
         parser.add_argument("--until", help="the endpoint of the time interval of interest")
         return parser.parse_args()
 
-    def parse_log_lines(self):
+    def parse_log_lines(self, log_lines):
         datetime_indicator = ' '
         blank_line_indicator = '\n'
         working_loglet = Loglet()
         output = []
-        with open(logfile) as f:
-            current_line = f.readline()
-            while f.readline():
-                if currentLine.startswith(blank_line_indicator):
+        for line in self.git_log_lines:
+                if line.startswith(blank_line_indicator):
                     output.append(working_loglet)
                     working_loglet = Loglet()
-                elif currentLine.startswith(datetime_indicator):
-                    working_loglet.add_header(current_line)
+                elif line.startswith(datetime_indicator):
+                    working_loglet.add_header(line)
                 else:
-                    working_loglet.add_content()
-                currentLine = f.readline()
-            output.append(loglet)
+                    working_loglet.add_content(line)
         return output
+
+
 
 g = GitLogData()
