@@ -1,23 +1,31 @@
 import argparse
 import subprocess
 
-import Loglet.py
+# user-installed dependencies
+import git
 
-class GitLogCaller(object):
+# Locally-defined modules
+import Loglet
+
+class GitLogData(object):
     def __init__(self):
         self.args = self.parseCommandLineArguments()
-        self.git_log_call = ["git", "log", "--numstat", "--date=iso", "--format=' %H,%ad'"]
-        self.git_log_call.extend(self.create_git_log_call())
-        for item in self.git_log_call:
-            print item
+        self.git_loglines = self.get_git_log().splitlines(True)
+        print self.git_loglines[0:4]
 
-    def create_git_log_call(self):
-        optional_arguments = ["since", "until"]
-        command_line_arguments = ["--%s='%s'" % (k,v)
-                                      for k,v
-                                      in vars(self.args).iteritems()
-                                      if k in optional_arguments and v is not None]
-        return command_line_arguments
+    def get_git_log(self):
+        arguments = ["git", "log", "--numstat", "--date=iso", "--format=' %H,%ad'"]
+        arguments = arguments.extend(self.get_optional_arguments())
+        repo = git.Repo(self.args.repo_path)
+        return repo.git.log(arguments)
+
+    def get_optional_arguments(self):
+        optional_flags = ["since", "until"]
+        return ["--%s='%s'" % (k,v)
+                    for k,v
+                    in vars(self.args).iteritems()
+                    if k in optional_flags and v is not None]
+
 
     def parseCommandLineArguments(self):
         parser = argparse.ArgumentParser()
@@ -45,4 +53,4 @@ class GitLogCaller(object):
             output.append(loglet)
         return output
 
-g = GitLogCaller()
+g = GitLogData()
