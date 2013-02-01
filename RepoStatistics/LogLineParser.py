@@ -12,7 +12,7 @@ class GitLogData(object):
     def __init__(self):
         self.args = self.parseCommandLineArguments()
         self.git_log_lines = self.get_git_log().splitlines(True)
-        loglets = self.parse_log_lines(self.git_log_lines)
+        self.loglets = self.parse_log_lines(self.git_log_lines)
         self.write_output()
 
     def get_git_log(self):
@@ -45,11 +45,12 @@ class GitLogData(object):
         working_loglet = Loglet()
         output = []
         for line in self.git_log_lines:
-                if line.startswith(blank_line_indicator):
+                if line.startswith(datetime_indicator):
                     output.append(working_loglet)
                     working_loglet = Loglet()
-                elif line.startswith(datetime_indicator):
                     working_loglet.add_header(line)
+                elif line.startswith('\n'):
+                    pass
                 else:
                     working_loglet.add_content(line)
         return output
@@ -65,17 +66,22 @@ class GitLogData(object):
                    'date',
                    'time',
                    'datetime',
-                   'file_path',
+                   'filename',
                    'lines_added',
                    'lines_deleted']
         output_file.write('%s\n' % ','.join(columns))
 
     def write_loglets(self, output_file):
-        pass
-        # write columns
-        # for loglet in loglets:
-            # write loglet
-        # write newline
+        for loglet in self.loglets:
+            for item in loglet.diffstats:
+                output = '%s,%s,%s,%s,%s,%s,%s' % (loglet.sha,
+                                                   loglet.date,
+                                                   loglet.time,
+                                                   loglet.datetime,
+                                                   item.filename,
+                                                   item.lines_added,
+                                                   item.lines_deleted)
+                output_file.write('%s\n' % output)
 
 
 g = GitLogData()

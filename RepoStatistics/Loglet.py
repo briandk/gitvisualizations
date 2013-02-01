@@ -7,11 +7,11 @@ class Loglet(object):
         self.time = ''
         self.datetime = ''
         self.gmt_offset = ''
-        self.diffstats = None
+        self.diffstats = []
 
     def add_header(self, header):
         sha, remainder = header.strip().split(",", 1)
-        time, date, gmt_offset = remainder.split()
+        date, time, gmt_offset = remainder.split()
         self.sha = sha
         self.date = date
         self.time = time
@@ -24,7 +24,4 @@ class Loglet(object):
         d.lines_added = lines_added
         d.lines_deleted = lines_deleted
         d.filename = filename
-        if self.diffstats is None:
-            self.diffstats = [d]
-        else:
-            self.diffstats = self.diffstats.append(d)
+        self.diffstats.append(d)
