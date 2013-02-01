@@ -52,6 +52,11 @@ class GitLogData(object):
                     working_loglet.add_content(line)
         return output
 
-
+    def write_csv(self):
+        # with temporary_file as f:
+            # write csv columns
+            # for loglet in loglets:
+                # write loglet
+            # write newline
 
 g = GitLogData()
