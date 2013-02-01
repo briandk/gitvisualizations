@@ -1,5 +1,6 @@
 import argparse
 import subprocess
+import os.path
 
 # user-installed dependencies
 import git
@@ -12,6 +13,7 @@ class GitLogData(object):
         self.args = self.parseCommandLineArguments()
         self.git_log_lines = self.get_git_log().splitlines(True)
         loglets = self.parse_log_lines(self.git_log_lines)
+        self.write_output()
 
     def get_git_log(self):
         arguments = ['--numstat', '--date=iso', '--format= %H,%ad']
@@ -52,11 +54,17 @@ class GitLogData(object):
                     working_loglet.add_content(line)
         return output
 
-    def write_csv(self):
-        # with temporary_file as f:
-            # write csv columns
-            # for loglet in loglets:
-                # write loglet
-            # write newline
+    def write_output(self):
+        output_path = os.path.join(self.args.repo_path, "repo_statistics.csv")
+        with open(output_path, 'w') as output_file:
+            self.write_loglets(output_file)
+
+    def write_loglets(self, output_file):
+        pass
+        # write columns
+        # for loglet in loglets:
+            # write loglet
+        # write newline
+
 
 g = GitLogData()
