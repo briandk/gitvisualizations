@@ -57,7 +57,18 @@ class GitLogData(object):
     def write_output(self):
         output_path = os.path.join(self.args.repo_path, "repo_statistics.csv")
         with open(output_path, 'w') as output_file:
+            self.write_columns(output_file)
             self.write_loglets(output_file)
+
+    def write_columns(self, output_file):
+        columns = ['sha',
+                   'date',
+                   'time',
+                   'datetime',
+                   'file_path',
+                   'lines_added',
+                   'lines_deleted']
+        output_file.write('%s\n' % ','.join(columns))
 
     def write_loglets(self, output_file):
         pass
