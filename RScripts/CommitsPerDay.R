@@ -11,7 +11,6 @@ repo.statistics <- read.csv(csv.file, stringsAsFactors=FALSE)
 formatDatesAndTimes <- function(repo.statistics) {
   output <- within(repo.statistics, {
     date <- ymd(date)
-    time <- hms(time)
     datetime <- ymd_hms(datetime)
   })
   return(output)
@@ -27,6 +26,15 @@ formatAdditionsAndDeletions <- function(repo.statistics) {
 
 removeNAs <- function(repo.statistics) {
   return(repo.statistics[complete.cases(repo.statistics), ])
+}
+
+getCommitsPerDay <- function(repo.statistics) {
+  output <- ddply(repo.statistics,
+                  .(data),
+                  summarize,
+                  n = length(lines_added)
+            )
+  return(output)
 }
 
 repo.statistics <- formatDatesAndTimes(repo.statistics)
