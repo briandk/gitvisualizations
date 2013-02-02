@@ -17,7 +17,17 @@ formatDatesAndTimes <- function(repo.statistics) {
   return(output)
 }
 
-# formatAdditionsAndDeletions <- function()
+formatAdditionsAndDeletions <- function(repo.statistics) {
+  output <- within(repo.statistics, {
+    lines_added <- as.numeric(lines_added)
+    lines_deleted <- as.numeric(lines_deleted)
+  })
+  return(removeNAs(output))
+}
+
+removeNAs <- function(repo.statistics) {
+  return(repo.statistics[complete.cases(repo.statistics), ])
+}
 
 repo.statistics <- formatDatesAndTimes(repo.statistics)
-str(repo.statistics)
+repo.statistics <- formatAdditionsAndDeletions(repo.statistics)
