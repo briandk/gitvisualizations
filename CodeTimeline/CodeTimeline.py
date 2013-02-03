@@ -15,6 +15,7 @@ class FileHandler(object):
         self.input = self.sanitizeFilepath(self.args.input)
         self.outputDirectory, self.outputFilename = self.getOutput()
         self.html = '%s.html' % os.path.join(self.outputDirectory, self.outputFilename)
+        self.externalFileDirectory = os.path.join(os.path.dirname(__file__), "externalFiles")
         self.externalFiles = ['TimelineStyle.css',
                               'prism.js',
                               'prism.css',
@@ -57,7 +58,7 @@ class FileHandler(object):
 
     def copyExternalFiles(self):
         for filename in self.externalFiles:
-            source = os.path.join(os.path.dirname(__file__), filename)
+            source = os.path.join(self.externalFileDirectory, filename)
             destination = os.path.join(self.outputDirectory, filename)
             shutil.copy(source, destination)
 
