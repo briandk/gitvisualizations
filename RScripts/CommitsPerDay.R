@@ -4,7 +4,7 @@ library(ggplot2)
 library(plyr)
 library(lubridate)
 
-csv.file = "~/Dropbox/dev/granovaGG/repo_statistics.csv"
+csv.file = "~/Desktop/test-student-repo/repo_statistics.csv"
 
 repo.statistics <- read.csv(csv.file, stringsAsFactors=FALSE)
 
@@ -43,6 +43,8 @@ plotCommitsPerDay <- function(repo.statistics) {
                 y = n),
             data = getCommitsPerDay(repo.statistics))
   p <- p + geom_line()
+  p <- p + ylab("commits")
+  p <- p + ggtitle("Commit Activity over Time")
   return(p)
 }
 
