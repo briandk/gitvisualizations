@@ -30,12 +30,24 @@ removeNAs <- function(repo.statistics) {
 
 getCommitsPerDay <- function(repo.statistics) {
   output <- ddply(repo.statistics,
-                  .(data),
+                  .(date),
                   summarize,
                   n = length(lines_added)
             )
   return(output)
 }
 
+plotCommitsPerDay <- function(repo.statistics) {
+  p <- ggplot(
+            aes(x = date, 
+                y = n),
+            data = getCommitsPerDay(repo.statistics))
+  p <- p + geom_line()
+  return(p)
+}
+
 repo.statistics <- formatDatesAndTimes(repo.statistics)
 repo.statistics <- formatAdditionsAndDeletions(repo.statistics)
+p <- plotCommitsPerDay(repo.statistics)
+print(p)
+
