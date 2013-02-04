@@ -32,7 +32,10 @@ getCommitsPerDay <- function(repo.statistics) {
   output <- ddply(repo.statistics,
                   .(date),
                   summarize,
-                  n = length(lines_added)
+                  commits.per.day = length(lines_added)
+            )
+  output <- transform(output, 
+                      cumulative.commits = cumsum(commits.per.day)
             )
   return(output)
 }
@@ -40,12 +43,22 @@ getCommitsPerDay <- function(repo.statistics) {
 plotCommitsPerDay <- function(repo.statistics) {
   p <- ggplot(
             aes(x = date, 
-                y = n),
+                y = commits.per.day),
             data = getCommitsPerDay(repo.statistics))
   p <- p + geom_line()
   p <- p + ylab("commits")
   p <- p + ggtitle("Commit Activity over Time")
+  p <- p + cumulativeCommitsPerDay()
   return(p)
+}
+
+cumulativeCommitsPerDay <- function() {
+  return(
+    geom_line(
+      aes(y = cumulative.commits,
+          x = date)
+    )
+  )
 }
 
 repo.statistics <- formatDatesAndTimes(repo.statistics)
