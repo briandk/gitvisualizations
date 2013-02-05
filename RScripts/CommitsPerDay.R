@@ -32,7 +32,7 @@ getCommitsPerDay <- function(repo.statistics) {
   output <- ddply(repo.statistics,
                   .(date),
                   summarize,
-                  commits.per.day = length(lines_added)
+                  commits.per.day = length(sha)
             )
   output <- transform(output,
                       cumulative.commits = cumsum(commits.per.day)
