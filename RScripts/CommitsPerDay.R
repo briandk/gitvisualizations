@@ -1,8 +1,13 @@
 # TODO: use ddply to summarize the data so I can plot raw counts
 
+# Base R dependencies
+library(RColorBrewer)
+
+# User-installed dependencies
 library(ggplot2)
 library(plyr)
 library(lubridate)
+library(reshape2)
 
 csv.file = "~/Desktop/test-student-repo/repo_statistics.csv"
 
@@ -34,9 +39,17 @@ getCommitsPerDay <- function(repo.statistics) {
                   summarize,
                   commits.per.day = length(sha)
             )
-  output <- transform(output,
-                      cumulative.commits = cumsum(commits.per.day)
-            )
+  return(output)
+}
+
+getCumulativeCommitsOverTime <- function(repo.statistics) {
+  output <- ddply(repo.statistics,
+                  .(sha, datetime),
+                  summarize,
+                  number.of.commits = length(unique(sha)))
+  output <- arrange(output, datetime)
+  output <- transform(output, cumulative.commits = cumsum(number.of.commits))
+  print(head(output))
   return(output)
 }
 
@@ -45,18 +58,24 @@ plotCommitsPerDay <- function(repo.statistics) {
             aes(x = date,
                 y = commits.per.day),
             data = getCommitsPerDay(repo.statistics))
-  p <- p + geom_line()
+  p <- p + geom_area(
+             fill = brewer.pal(n=8, name="Set1")[2],
+             alpha = 0.5)
+  p <- p + cumulativeCommitsOverTime(repo.statistics)
+  p <- p + geom_point()
   p <- p + ylab("commits")
   p <- p + ggtitle("Commit Activity over Time")
-  p <- p + cumulativeCommitsPerDay()
   return(p)
 }
 
-cumulativeCommitsPerDay <- function() {
+cumulativeCommitsOverTime <- function(repo.statistics) {
   return(
     geom_line(
       aes(y = cumulative.commits,
-          x = date)
+          x = datetime),
+      color = brewer.pal(n=8, name="Set1")[1],
+      alpha = 0.75,
+      data = getCumulativeCommitsOverTime(repo.statistics)
     )
   )
 }
@@ -135,4 +154,4 @@ p <- plotCommitsPerDay(repo.statistics)
 print(p)
 p <- SummaryOfLinesAddedAndLinesDeletedByDay(repo.statistics)
 print(p)
-IndividialLinesAddedAndDeletedByDay(repo.statistics)
+
