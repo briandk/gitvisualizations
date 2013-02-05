@@ -76,7 +76,7 @@ SummaryOfLinesAddedAndLinesDeletedByDay <- function(repo.statistics) {
   p <- p + linesAddedByDay()
   p <- p + linesDeletedByDay()
   p <- p + theme(axis.text.x = element_text(angle = 90))
-  p <- p + ggtitle("Summary of Lines Added/Deleted Over Time")
+  p <- p + ggtitle("Summary of Lines Added/Deleted Per Day")
   p <- p + xlab("Date")
   p <- p + ylab("Lines Added/Deleted")
   p <- p + facet_wrap(~ filename)
@@ -107,9 +107,32 @@ linesDeletedByDay <- function() {
   )
 }
 
+getFilesThatWereChangedMoreThanOnce <- function(repo.statistics) {
+  files <- daply(repo.statistics,
+                 .(filename),
+                 summarize,
+                 length(sha))
+  files.changed.more.than.once <- names(files)[files > 4]
+  return(files.changed.more.than.once)
+}
+
+IndividialLinesAddedAndDeletedByDay <- function(repo.statistics) {
+  for(unique.name in getFilesThatWereChangedMoreThanOnce(repo.statistics)) {
+    additions.deletions.data <- getLinesAddedAndLinesDeletedByDay(repo.statistics)
+    per.file.data <- subset(additions.deletions.data, filename == unique.name)
+    p <- ggplot(aes(x = date, y = lines_added), data = per.file.data)
+    p <- p + geom_line()
+    p <- p + ggtitle(unique.name)
+    # p <- p + linesDeletedByDay()
+    print(per.file.data)
+    print(p)
+  }
+}
+
 repo.statistics <- formatDatesAndTimes(repo.statistics)
 repo.statistics <- formatAdditionsAndDeletions(repo.statistics)
 p <- plotCommitsPerDay(repo.statistics)
 print(p)
 p <- SummaryOfLinesAddedAndLinesDeletedByDay(repo.statistics)
 print(p)
+IndividialLinesAddedAndDeletedByDay(repo.statistics)
