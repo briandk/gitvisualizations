@@ -7,7 +7,6 @@ library(RColorBrewer)
 library(ggplot2)
 library(plyr)
 library(lubridate)
-library(reshape2)
 
 csv.file = "~/Desktop/test-student-repo/repo_statistics.csv"
 
@@ -49,7 +48,6 @@ getCumulativeCommitsOverTime <- function(repo.statistics) {
                   number.of.commits = length(unique(sha)))
   output <- arrange(output, datetime)
   output <- transform(output, cumulative.commits = cumsum(number.of.commits))
-  print(head(output))
   return(output)
 }
 
