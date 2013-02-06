@@ -146,10 +146,21 @@ IndividialLinesAddedAndDeletedByDay <- function(repo.statistics) {
   }
 }
 
-repo.statistics <- formatDatesAndTimes(repo.statistics)
-repo.statistics <- formatAdditionsAndDeletions(repo.statistics)
-p <- plotCommitsPerDay(repo.statistics)
-print(p)
-p <-SmallMultiplesOfAdditionsAndDeletions(repo.statistics)
-print(p)
+makePDF <- function(output.file) {
+  pdf(file = output.file, 
+      width = 1.3*11.5,
+      height = 1.3*8,
+      onefile = TRUE)
+  repo.statistics <- formatDatesAndTimes(repo.statistics)
+  repo.statistics <- formatAdditionsAndDeletions(repo.statistics)
+  p <- plotCommitsPerDay(repo.statistics)
+  print(p)
+  p <-SmallMultiplesOfAdditionsAndDeletions(repo.statistics)
+  print(p)
+  dev.off()
+}
+
+makePDF("~/Desktop/test.pdf")
+
+
 
