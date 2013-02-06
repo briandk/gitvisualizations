@@ -72,7 +72,7 @@ $ python RepoStatistics/RepoStatistics.py your_repo --until='yesterday'
 You can even combine both flags (naturally):
 
 ```bash
-$ python RepoStatistics/RepoStatistics.py your_repo --since='2011-01-27' --until=`yesterday`
+$ python RepoStatistics/RepoStatistics.py your_repo --since='2011-01-27' --until='yesterday'
 ```
 
 
