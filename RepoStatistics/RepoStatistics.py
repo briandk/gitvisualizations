@@ -20,8 +20,15 @@ class GitLogData(object):
         optional_arguments = self.get_optional_arguments()
         if optional_arguments is not []:
             arguments.extend(optional_arguments)
-        repo = git.Repo(self.args.repo_path)
+        repo = git.Repo(self.sanitize_filepath(self.args.repo_path))
         return repo.git.log(arguments)
+
+    def sanitize_filepath(self, filepath):
+        filepath = os.path.expanduser(filepath)
+        if os.path.isabs(filepath) == False:
+            filepath = os.path.join(os.getcwd(), filepath)
+        filepath = os.path.normpath(filepath)
+        return filepath
 
     def get_optional_arguments(self):
         optional_flags = ["since", "until"]
@@ -30,7 +37,6 @@ class GitLogData(object):
                        in vars(self.args).iteritems()
                        if k in optional_flags and v is not None]
         return output
-
 
     def parseCommandLineArguments(self):
         parser = argparse.ArgumentParser()
