@@ -52,11 +52,29 @@ You'll also need to install the following dependent libraries from CRAN:
     $ pip install -r requirements.txt
     ```
 
-6. You should be good to go! Assuming your terminal prompt is still in the `gitvisualizations` project directory, you can start using it like so:
+## RepoStatistics.py Usage
+
+Assuming your terminal prompt is still in the `gitvisualizations` project directory, you can start using `RepoStatistics.py` like so:
   
-    ```bash
-    $ python RepoStatistics/RepoStatistics.py path_to_another_git_  repository
-    ```
+```bash
+$ python RepoStatistics/RepoStatistics.py path_to_another_git_repository
+```
+
+### Limiting Date Ranges
+
+You can also specify delimiting dates and times, using the `--since` and `--until` flags. They offer [enormous flexibility][9]
+
+```bash
+$ python python RepoStatistics/RepoStatistics.py your_repo --since='2011-01-27'
+$ python RepoStatistics/RepoStatistics.py your_repo --until='yesterday'
+```
+
+You can even combine both flags (naturally):
+
+```bash
+$ python RepoStatistics/RepoStatistics.py your_repo --since='2011-01-27' --until=`yesterday`
+```
+
 
 ## Sample Output Graphics
 
@@ -83,3 +101,4 @@ Please give us feedback! We'd love to hear your gripes, thrill stories, and feat
 [6]: http://wiki.python.org/moin/BeginnersGuide/Download
 [7]: http://www.pip-installer.org/en/latest/installing.html
 [8]: https://github.com/briandk/gitvisualizations/issues/new
+[9]: http://www.kernel.org/pub/software/scm/git/docs/git-log.html#_examples
