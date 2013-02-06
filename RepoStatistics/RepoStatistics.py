@@ -14,6 +14,7 @@ class GitLogData(object):
         self.git_log_lines = self.get_git_log().splitlines(True)
         self.loglets = self.parse_log_lines(self.git_log_lines)
         self.write_output()
+        self.call_R()
 
     def get_git_log(self):
         arguments = ['--numstat', '--date=iso', '--format= %H,%ad']
@@ -89,5 +90,13 @@ class GitLogData(object):
                                                    item.lines_deleted)
                 output_file.write('%s\n' % output)
 
+    def call_R(self):
+        script_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'RepoStatistics.R')
+        with open(script_path) as r_script:
+            subprocess.call(['R',
+                             '--vanilla',
+                             '--args',
+                             self.args.repo_path],
+                             stdin = r_script)
 
 g = GitLogData()

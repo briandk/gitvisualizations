@@ -8,7 +8,11 @@ library(ggplot2)
 library(plyr)
 library(lubridate)
 
-csv.file = "~/Desktop/test-student-repo/repo_statistics.csv"
+# Set the working directory
+working.directory <- commandArgs(trailingOnly = TRUE)
+setwd(working.directory)
+csv.file <- "repo_statistics.csv"
+pdf.file <- "repo_statistics.pdf"
 
 repo.statistics <- read.csv(csv.file, stringsAsFactors=FALSE)
 
@@ -160,7 +164,7 @@ makePDF <- function(output.file) {
   dev.off()
 }
 
-makePDF("~/Desktop/test.pdf")
+makePDF(pdf.file)
 
 
 
