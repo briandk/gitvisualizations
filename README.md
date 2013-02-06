@@ -1,4 +1,4 @@
-Welcome! This repository contains tools for visualizing changes to code over time. The workhorse here is `FileTimeline.py`, a [Python][1] script designed to help visualize changes made to a single file of code. 
+Welcome! This repository contains tools for visualizing changes to code over time.
 
 ## Requirements for using these tools ##
 
@@ -53,14 +53,23 @@ You'll also need to install the following dependent libraries from CRAN:
     ```
 
 6. You should be good to go! Assuming your terminal prompt is still in the `gitvisualizations` project directory, you can start using it like so:
-
-    ```bash
-    $ python FileTimeline.py ~/ReallyInterestingCodeYouHave.c
-    ```
   
     ```bash
     $ python RepoStatistics/RepoStatistics.py path_to_another_git_  repository
     ```
+
+## Sample Output Graphics
+
+### Commit Activity Summary Plot
+
+In this plot, the blue ribbon bins the total number of commits per day. The red curve shows the cumulative sum of commits over time.
+
+![CommitActivityOverTime-1](https://f.cloud.github.com/assets/330036/130325/80a3c67a-7014-11e2-8088-eb696e35fd51.png)
+
+### Small multiple summary of per-file additions and deletions
+This plot shows a small multiple for each unique file in the project. The green ribbon represents total number of lines added per day. The orange ribbon is total number of deletions per day.
+
+![Small Multiple Summary](https://f.cloud.github.com/assets/330036/130328/a10e761c-7014-11e2-8de2-53d293812b07.png)
 
 ## Let us know what you think
 
