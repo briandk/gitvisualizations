@@ -37,19 +37,22 @@ You'll also need to install the following dependent libraries from CRAN:
 3. Make sure you [have Python Installed][6]
 
     ```bash
-    $ which python # should return python's location, if it's installed
+    $ python --version # should return python's version number, if it's installed
     ```
 
 4. [Install pip][7] if you haven't got it already
 
     ```bash
+    $ curl -O https://raw.github.com/pypa/pip/master/contrib/get-pip.py
+    $ sudo python get-pip.py
+    $ rm get-pip.py
     $ which pip # should return pip's location, if it's installed
     ```
 
 5. From your clone of our project directory, use pip to install the required python dependencies for this project
 
     ```bash
-    $ pip install -r requirements.txt
+    $ sudo pip install -r requirements.txt
     ```
 
 ## RepoStatistics.py Usage
