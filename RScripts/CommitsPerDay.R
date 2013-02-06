@@ -88,7 +88,7 @@ getLinesAddedAndLinesDeletedByDay <- function(repo.statistics) {
   return(output)
 }
 
-SummaryOfLinesAddedAndLinesDeletedByDay <- function(repo.statistics) {
+SmallMultiplesOfAdditionsAndDeletions <- function(repo.statistics) {
   p <- ggplot(data = getLinesAddedAndLinesDeletedByDay(repo.statistics))
   p <- p + linesAddedByDay()
   p <- p + linesDeletedByDay()
@@ -106,7 +106,7 @@ linesAddedByDay <- function() {
       aes(x = date,
           y = lines_added
       ),
-      fill = "darkblue",
+      fill = brewer.pal(n=5, name="Dark2")[1],
       alpha = 0.5
     )
   )
@@ -118,7 +118,7 @@ linesDeletedByDay <- function() {
       aes(x = date,
           y = lines_deleted
       ),
-      fill = "orange",
+      fill = brewer.pal(n=5, name="Dark2")[2],
       alpha = 0.5
     )
   )
@@ -150,6 +150,6 @@ repo.statistics <- formatDatesAndTimes(repo.statistics)
 repo.statistics <- formatAdditionsAndDeletions(repo.statistics)
 p <- plotCommitsPerDay(repo.statistics)
 print(p)
-p <- SummaryOfLinesAddedAndLinesDeletedByDay(repo.statistics)
+p <-SmallMultiplesOfAdditionsAndDeletions(repo.statistics)
 print(p)
 
