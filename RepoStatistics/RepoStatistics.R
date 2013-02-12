@@ -106,24 +106,26 @@ SmallMultiplesOfAdditionsAndDeletions <- function(repo.statistics) {
 
 linesAddedByDay <- function() {
   return(
-    geom_area(
+    geom_bar(
       aes(x = date,
           y = lines_added
       ),
+      stat = "identity",
       fill = brewer.pal(n=5, name="Dark2")[1],
-      alpha = 0.5
+      alpha = 1.0
     )
   )
 }
 
 linesDeletedByDay <- function() {
   return(
-    geom_area(
+    geom_bar(
       aes(x = date,
           y = lines_deleted
       ),
+      stat = "identity",
       fill = brewer.pal(n=5, name="Dark2")[2],
-      alpha = 0.5
+      alpha = 1.0
     )
   )
 }
