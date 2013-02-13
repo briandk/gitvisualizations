@@ -46,10 +46,17 @@ getCumulativeCommitsOverTime <- function(repo.statistics) {
   return(output)
 }
 
+getDataForCommitsPerDay <- function(repo.statistics) {
+  output <- ddply(repo.statistics,
+                  .(datetime, date),
+                  nrow)
+  return(output)
+}
+
 plotCommitsPerDay <- function(repo.statistics) {
   p <- ggplot(
             aes(x = date),
-            data = repo.statistics)
+            data = getDataForCommitsPerDay(repo.statistics))
   p <- p + geom_histogram(
              binwidth = 60 * 60 * 24, # 60 seconds/minute * 60 minutes/hour * 24 hours/day
              fill = brewer.pal(n=8, name="Set1")[2],
