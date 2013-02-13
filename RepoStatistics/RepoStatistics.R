@@ -36,15 +36,6 @@ removeNAs <- function(repo.statistics) {
   return(repo.statistics[complete.cases(repo.statistics), ])
 }
 
-getCommitsPerDay <- function(repo.statistics) {
-  output <- ddply(repo.statistics,
-                  .(date),
-                  summarize,
-                  commits.per.day = length(sha)
-            )
-  return(output)
-}
-
 getCumulativeCommitsOverTime <- function(repo.statistics) {
   output <- ddply(repo.statistics,
                   .(sha, datetime),
@@ -57,14 +48,13 @@ getCumulativeCommitsOverTime <- function(repo.statistics) {
 
 plotCommitsPerDay <- function(repo.statistics) {
   p <- ggplot(
-            aes(x = date,
-                y = commits.per.day),
-            data = getCommitsPerDay(repo.statistics))
-  p <- p + geom_area(
+            aes(x = date),
+            data = repo.statistics)
+  p <- p + geom_histogram(
+             binwidth = 60 * 60 * 24, # 60 seconds/minute * 60 minutes/hour * 24 hours/day
              fill = brewer.pal(n=8, name="Set1")[2],
-             alpha = 0.5)
+             alpha = 1.0)
   p <- p + cumulativeCommitsOverTime(repo.statistics)
-  p <- p + geom_point()
   p <- p + ylab("commits")
   p <- p + ggtitle("Commit Activity over Time")
   return(p)
@@ -76,7 +66,7 @@ cumulativeCommitsOverTime <- function(repo.statistics) {
       aes(y = cumulative.commits,
           x = datetime),
       color = brewer.pal(n=8, name="Set1")[1],
-      alpha = 0.75,
+      alpha = 1.0,
       data = getCumulativeCommitsOverTime(repo.statistics)
     )
   )
@@ -153,7 +143,7 @@ IndividialLinesAddedAndDeletedByDay <- function(repo.statistics) {
 }
 
 makePDF <- function(output.file) {
-  pdf(file = output.file, 
+  pdf(file = output.file,
       width = 1.3*11.5,
       height = 1.3*8,
       onefile = TRUE)
