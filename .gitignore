@@ -16,5 +16,5 @@ Thumbs.db
 .RData
 .RHistory
 
-# gitignore #
-.gitignore
+# JetBrains / PyCharm
+.idea
