@@ -65,7 +65,7 @@ $ python RepoStatistics/RepoStatistics.py path_to_another_git_repository
 You can also specify delimiting dates and times, using the `--since` and `--until` flags. They offer [enormous flexibility][9]
 
 ```bash
-$ python python RepoStatistics/RepoStatistics.py your_repo --since='2011-01-27'
+$ python RepoStatistics/RepoStatistics.py your_repo --since='2011-01-27'
 $ python RepoStatistics/RepoStatistics.py your_repo --until='yesterday'
 ```
 
