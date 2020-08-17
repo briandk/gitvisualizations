@@ -1,0 +1,6 @@
+{
+    "python.jediEnabled": true,
+    "python.pythonPath": "/anaconda3/envs/codetimeline/bin/python",
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true
+}
