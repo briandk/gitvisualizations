@@ -1,3 +1,5 @@
+Python>=3
+
 # For interacting with git repositories:
 GitPython>=0.3
 
