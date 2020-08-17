@@ -33,7 +33,7 @@ class FileHandler(object):
 
     def sanitizeFilepath(self, filepath):
         filepath = os.path.expanduser(filepath)
-        if os.path.isabs(filepath) == False:
+        if os.path.isabs(filepath) is False:
             filepath = os.path.join(os.getcwd(), filepath)
         filepath = os.path.normpath(filepath)
         return filepath
@@ -126,9 +126,3 @@ def outputCommits():
 
 if __name__ == '__main__':
     outputCommits()
-
-
-
-
-
-
