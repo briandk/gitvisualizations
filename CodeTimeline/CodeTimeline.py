@@ -9,26 +9,33 @@ import shutil
 from git import *
 import pystache
 
+
 class FileHandler(object):
     def __init__(self):
         self.args = self.parseCommandLineArguments()
         self.input = self.sanitizeFilepath(self.args.input)
         self.outputDirectory, self.outputFilename = self.getOutput()
-        self.html = '%s.html' % os.path.join(self.outputDirectory, self.outputFilename)
-        self.externalFileDirectory = os.path.join(os.path.dirname(__file__), "externalFiles")
-        self.externalFiles = ['TimelineStyle.css',
-                              'prism.js',
-                              'prism.css',
-                              'jQuery.js',
-                              'bootstrap.min.js',
-                              'bootstrap.css',
-                              'Timeline.js']
+        self.html = "%s.html" % os.path.join(self.outputDirectory, self.outputFilename)
+        self.externalFileDirectory = os.path.join(
+            os.path.dirname(__file__), "externalFiles"
+        )
+        self.externalFiles = [
+            "TimelineStyle.css",
+            "prism.js",
+            "prism.css",
+            "jQuery.js",
+            "bootstrap.min.js",
+            "bootstrap.css",
+            "Timeline.js",
+        ]
         self.copyExternalFiles()
 
     def parseCommandLineArguments(self):
         parser = argparse.ArgumentParser()
         parser.add_argument("input", help="The file you'd like to see a timeline of")
-        parser.add_argument("--output", "-o", help="An optional name for the output file")
+        parser.add_argument(
+            "--output", "-o", help="An optional name for the output file"
+        )
         return parser.parse_args()
 
     def sanitizeFilepath(self, filepath):
@@ -39,14 +46,18 @@ class FileHandler(object):
         return filepath
 
     def getHTMLOutputFile(self):
-        path = '%s.html' % os.path.join(self.outputDirectory, self.outputFilename)
-        return codecs.open(path, 'w', 'utf_8')
+        path = "%s.html" % os.path.join(self.outputDirectory, self.outputFilename)
+        return codecs.open(path, "w", "utf_8")
 
     def getOutput(self):
-        (rootPath, fileExtension) = os.path.splitext(self.sanitizeFilepath(self.args.input))
+        (rootPath, fileExtension) = os.path.splitext(
+            self.sanitizeFilepath(self.args.input)
+        )
         (inputFilePath, filename) = os.path.split(rootPath)
         if self.args.output is None:
-            outputPath = self.sanitizeFilepath(os.path.join('~/gitvisualizations', filename))
+            outputPath = self.sanitizeFilepath(
+                os.path.join("~/gitvisualizations", filename)
+            )
         else:
             outputPath = self.sanitizeFilepath(self.args.output)
         self.makeOutputDirectory(outputPath)
@@ -62,6 +73,7 @@ class FileHandler(object):
             destination = os.path.join(self.outputDirectory, filename)
             shutil.copy(source, destination)
 
+
 class TimelineView(object):
     def __init__(self, model):
         self.model = model
@@ -70,7 +82,8 @@ class TimelineView(object):
         return self.model.snapshots
 
     def revisions(self):
-        return ','.join(['"%s"' % revision for revision in self.model.fileRevisions])
+        return ",".join(['"%s"' % revision for revision in self.model.fileRevisions])
+
 
 class Controller(object):
     def __init__(self):
@@ -84,51 +97,69 @@ class Controller(object):
             output.write(renderer.render(self.view))
         return None
 
-class GitTimeline(object):
 
+class GitTimeline(object):
     def __init__(self, inputFile):
         self.repo = Repo(inputFile)
-        self.fileRevisions = self.repo.git.log('--reverse', inputFile, format='%H').splitlines()
-        self.timestamps = self.repo.git.log('--reverse', inputFile, date='local', format='%ad').splitlines()
-        self.blames = [self.repo.git.blame(revision, '--root', '--show-number', '--show-name', '-s', inputFile)
-                          for revision in self.fileRevisions]
-        self.snapshots = [self.composeSnapshot(index, revision, timestamp)
-                              for (index, revision, timestamp) in zip(self.blames, self.fileRevisions, self.timestamps)]
+        self.fileRevisions = self.repo.git.log(
+            "--reverse", inputFile, format="%H"
+        ).splitlines()
+        self.timestamps = self.repo.git.log(
+            "--reverse", inputFile, date="local", format="%ad"
+        ).splitlines()
+        self.blames = [
+            self.repo.git.blame(
+                revision, "--root", "--show-number", "--show-name", "-s", inputFile
+            )
+            for revision in self.fileRevisions
+        ]
+        self.snapshots = [
+            self.composeSnapshot(index, revision, timestamp)
+            for (index, revision, timestamp) in zip(
+                self.blames, self.fileRevisions, self.timestamps
+            )
+        ]
 
     def composeSnapshot(self, blame, revision, timestamp):
         blamelets = [self.parseBlameLine(line, revision) for line in blame.splitlines()]
-        return {'blamelets': blamelets,
-                'code': '\n'.join([blamelet['code'] for blamelet in blamelets]),
-                'changedLines': ','.join([blamelet['newLineNumber'] for blamelet in blamelets if blamelet['isChanged']]),
-                'revision': revision,
-                'shortHash': revision[0:9],
-                'timestamp': timestamp}
+        return {
+            "blamelets": blamelets,
+            "code": "\n".join([blamelet["code"] for blamelet in blamelets]),
+            "changedLines": ",".join(
+                [
+                    blamelet["newLineNumber"]
+                    for blamelet in blamelets
+                    if blamelet["isChanged"]
+                ]
+            ),
+            "revision": revision,
+            "shortHash": revision[0:9],
+            "timestamp": timestamp,
+        }
 
     def parseBlameLine(self, line, revision):
-        (blameInfo, code) = line.split(')', 1)
+        (blameInfo, code) = line.split(")", 1)
         (sha, fileName, oldLineNumber, newLineNumber) = blameInfo.split()
         isChanged = False
-        if (revision.startswith(sha) is True):
+        if revision.startswith(sha) is True:
             isChanged = True
-        return {'sha': sha,
-                'fileName': fileName,
-                'oldLineNumber': oldLineNumber,
-                'newLineNumber': newLineNumber,
-                'isChanged': isChanged,
-                'code': code}
+        return {
+            "sha": sha,
+            "fileName": fileName,
+            "oldLineNumber": oldLineNumber,
+            "newLineNumber": newLineNumber,
+            "isChanged": isChanged,
+            "code": code,
+        }
+
 
 def outputCommits():
-    '''Creates an HTML timeline
-    of all a file's revisions.
-    '''
+    """
+    Creates an HTML timeline of all a file's revisions.
+    """
     c = Controller()
     c.render()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     outputCommits()
-
-
-
-
-
-
